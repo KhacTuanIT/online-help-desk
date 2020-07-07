@@ -24,7 +24,12 @@ namespace OnlineHelpDesk
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/font-awesome.css",
+                      "~/Content/datatables.min.css"));
+
+            bundles.Add(new StyleBundle("~/Content/login").Include(
+                      "~/Content/login.css"));
         }
     }
 }

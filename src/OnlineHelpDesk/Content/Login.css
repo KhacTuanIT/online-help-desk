@@ -1,0 +1,127 @@
+﻿body {
+    background: #feffff;
+}
+
+.head-login {
+    margin-top: 10vh;
+}
+
+.title-head-login {
+    padding: 10px 5px 20px 5px;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: #2b8a44;
+}
+
+.main-login {
+    font-size: 1.5rem;
+}
+
+.main-login .guide-main-login .ul-guide-main-login {
+    padding-left: 25px;
+    font-style: italic;
+    font-weight: 300;
+    color: #707070;
+}
+
+.main-login .content-main-login {
+    padding: 15px 10px;
+}
+
+.main-login .content-main-login form .form-group label {
+    font-weight: 600;
+    color: #555555;
+}
+
+.main-login .content-main-login form .form-check {
+    padding: 10px 0;
+}
+
+.main-login .content-main-login form .form-check span {
+    padding: 0px 0px 0px 10px;
+    color: #555555;
+}
+
+.main-login .content-main-login form .btn-login {
+    padding: 5px 35px;
+    font-size: 1.75rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: auto;
+    background: #2b8a44;
+    border-color: #24472d;
+}
+
+.main-login .content-main-login form .btn-login:hover,
+.main-login .content-main-login form .btn-login:focus {
+    background: #17b340;
+    border-color: #2b8a44;
+}
+
+.check {
+    cursor: pointer;
+    position: relative;
+    margin: auto;
+    width: 18px;
+    height: 18px;
+    -webkit-tap-highlight-color: transparent;
+    transform: translate3d(0, 0, 0);
+}
+
+.check:before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(34,50,84,0.03);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.check svg {
+    position: relative;
+    z-index: 1;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #c8ccd4;
+    stroke-width: 1.5;
+    transform: translate3d(0, 0, 0);
+    transition: all 0.2s ease;
+}
+
+.check svg path {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 0;
+}
+
+.check svg polyline {
+    stroke-dasharray: 22;
+    stroke-dashoffset: 66;
+}
+
+.check:hover:before {
+    opacity: 1;
+}
+
+.check:hover svg {
+    stroke: #4285f4;
+}
+
+#cbx:checked + .check svg {
+    stroke: #4285f4;
+}
+
+#cbx:checked + .check svg path {
+    stroke-dashoffset: 60;
+    transition: all 0.3s linear;
+}
+
+#cbx:checked + .check svg polyline {
+    stroke-dashoffset: 42;
+    transition: all 0.2s linear;
+    transition-delay: 0.15s;
+}

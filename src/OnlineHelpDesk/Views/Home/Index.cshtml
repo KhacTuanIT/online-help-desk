@@ -1,31 +1,49 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.CurrentPage = "Home";
+    ViewBag.Title = "Home";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+<div class="container content-ohd">
+    <div class="row">
+        <div class="col-sm-12 text-center content-ohd-title">
+            Online Help Desk
+        </div>
+        <div class="col-sm-12 ohd-about">
+            Online Help Desk (OHD) for the facilities in the campus. This is an Intranet based application that can be accessed throughout the campus. This system can be used to automate the workflow of service requests for the various facilities in the campus. This is one integrated system that covers different kinds of facilities like class-rooms, labs, hostels, mess, canteen, gymnasium, computer centre, faculty club etc. Registered users (students, faculty, lab-assistants and others) will be able to log in a request for service for any of the supported facilities. These requests will be sent to the concerned people, who are also valid users of the system, to get them resolved. There are features like email notifications/reminders, addition of a new facility to the system, report generators etc in this system.
+        </div>
+        <div class="col-sm-12 text-center content-ohd-sub">
+            How to create a request?
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="row">
+                <div class="col-md-4 col-sm-12 request-tag">
+                    <div class="request-box">
+                        <div class="request-tag-title text-center">Access to OHD system</div>
+                        <div class="request-tag-box text-center">
+                            <span>Using browser and connect to <a href="">OHD system</a></span>
+                            <img src="~/Content/AppImages/icon.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 request-tag">
+                    <div class="request-box">
+                        <div class="request-tag-title text-center">Create a request</div>
+                        <div class="request-tag-box text-center">
+                            <span>Click 'Create new request' in Menu to open request form</a></span>
+                            <img src="~/Content/AppImages/click256.png" width="105" height="105">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 request-tag">
+                    <div class="request-box">
+                        <div class="request-tag-title text-center">Send a request</div>
+                        <div class="request-tag-box text-center">
+                            <span>Fill out all field, Click 'Send request' and wait response</a></span>
+                            <img src="~/Content/AppImages/stopwatch-wait-pngrepo-com.png" width="105" height="105">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
