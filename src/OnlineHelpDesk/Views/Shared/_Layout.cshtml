@@ -23,7 +23,7 @@
                 <div class="col-md-8 col-sm-10">
                     <ul class="navbar-nav mr-auto ul-nav-ohd">
                         <li class="nav-item">
-                            @Html.ActionLink("Home", "Index", "Home")
+                            @Html.ActionLink("Home", "Index", "Home", new { @class= "link" })
                         </li>
                         <li class="nav-item li-menu-content">
                             <a class="link">Menu</a>
@@ -42,8 +42,8 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            @if (Request.IsAuthenticated)
-                            {
+                            @*@if (Request.IsAuthenticated)
+                            {*@
                             <a class="link">@User.Identity.GetUserName()</a>
                                 <div class="toggle-field profile-tf">
                                     <ul class="ul-profile">
@@ -60,16 +60,22 @@
                                             @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
                                             <a href="">Change Password</a>
                                         </li>
-                                        <li class="li-pf-item">
-                                            <a href="">Logout</a>
-                                        </li>
-                                    </ul>
+                                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                        {
+                                            <li class="li-pf-item">
+
+                                                @Html.AntiForgeryToken()
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                                
+                                            </li>
+                                        }
+                                        </ul>
                                 </div>
-                            }
+                            @*}
                             else
                             {
                                 <a class="link">Login</a>
-                            }
+                            }*@
 
                         </li>
                         <li class="nav-item">
