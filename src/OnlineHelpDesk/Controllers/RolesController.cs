@@ -10,7 +10,7 @@ using OnlineHelpDesk.Models;
 
 namespace OnlineHelpDesk.Controllers
 {
-    [Authorize(Roles="admin")]
+    [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
@@ -98,7 +98,7 @@ namespace OnlineHelpDesk.Controllers
         public ActionResult ManageUserRoles()
         {
             // prepopulat roles for the view dropdown
-            var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr =>new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
             ViewBag.Roles = list;
             return View();
         }
@@ -121,9 +121,9 @@ namespace OnlineHelpDesk.Controllers
         public ApplicationUserManager UserManager
         {
             get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
-            private set {_userManager = value; }
+            private set { _userManager = value; }
         }
         private ApplicationUserManager _userManager;
-       
+
     }
 }
