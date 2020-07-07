@@ -1,11 +1,59 @@
 ﻿@using OnlineHelpDesk.Models
 @model LoginViewModel
 @{
-    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "Log in - Online Help Desk";
 }
 
-<h2>@ViewBag.Title.</h2>
+
+<div class="head-login">
+    <div class="logo-head-login text-center">
+        <img src="~/Content/AppImages/icon.png">
+    </div>
+    <div class="title-head-login text-center">
+        Online Help Desk
+    </div>
+</div>
+<div class="main-login">
+    <div class="content-main-login">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "tuantk@ohd.com..." })
+                @*<input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="tuantk@ohd.com..." required="required">*@
+                <small id="emailHelp" class="form-text text-muted">Username is for internal use only.</small>
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" ,@placeholder = "Password" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                @*<input type="password" class="form-control" id="password" placeholder="Password" required="required">*@
+            </div>
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.RememberMe, new { @id = "cbx", @style = "display: none;" })
+                <input type="checkbox" id="cbx" style="display: none;">
+                <label for="cbx" class="check">
+                    <svg width="18px" height="18px" viewBox="0 0 18 18">
+                        <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                        <polyline points="1 9 7 14 15 4"></polyline>
+                    </svg>
+                </label>
+                <span>Remember me?</span>
+            </div>
+            <div>
+                <center>
+                    <button type="submit" class="btn btn-primary btn-login">Login</button>
+                </center>
+            </div>
+        }
+    </div>
+</div>
+
+@*<h2>@ViewBag.Title.</h2>
 <div class="row">
+
     <div class="col-md-8">
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -44,10 +92,6 @@
                 <p>
                     @Html.ActionLink("Register as a new user", "Register")
                 </p>
-                @* Enable this once you have account confirmation enabled for password reset functionality
-                    <p>
-                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                    </p>*@
             }
         </section>
     </div>
@@ -56,7 +100,7 @@
             @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
         </section>
     </div>
-</div>
+</div>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
