@@ -408,12 +408,6 @@ namespace OnlineHelpDesk.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
