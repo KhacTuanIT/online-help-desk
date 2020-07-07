@@ -187,8 +187,13 @@
     <Compile Include="Migrations\202007060451159_Initialize.Designer.cs">
       <DependentUpon>202007060451159_Initialize.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007071853467_MustChangePassword.cs" />
+    <Compile Include="Migrations\202007071853467_MustChangePassword.Designer.cs">
+      <DependentUpon>202007071853467_MustChangePassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DatabaseHelper.cs" />
     <Compile Include="Models\Equipment.cs" />
     <Compile Include="Models\EquipmentType.cs" />
     <Compile Include="Models\Facility.cs" />
@@ -300,6 +305,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202007060451159_Initialize.resx">
       <DependentUpon>202007060451159_Initialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007071853467_MustChangePassword.resx">
+      <DependentUpon>202007071853467_MustChangePassword.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
