@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -21,7 +23,7 @@
                 <div class="col-md-8 col-sm-10">
                     <ul class="navbar-nav mr-auto ul-nav-ohd">
                         <li class="nav-item">
-                            <a class="link" href="">Home</a>
+                            @Html.ActionLink("Home", "Index", "Home")
                         </li>
                         <li class="nav-item li-menu-content">
                             <a class="link">Menu</a>
@@ -29,7 +31,10 @@
                                 <div class="row">
                                     <div class="col-sm col-md-12">
                                         <ul class="ul-menu">
-                                            <li class="li-menu-item text-center"><a href="">Create new request</a></li>
+                                            <li class="li-menu-item text-center">
+                                                @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
+                                                <a href="">Create new request</a>
+                                            </li>
                                             <li class="li-menu-item text-center"><a href="">List request</a></li>
                                         </ul>
                                     </div>
@@ -37,24 +42,35 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="link">TuanTK</a>
-                            <div class="toggle-field profile-tf">
-                                <ul class="ul-profile">
-                                    <li class="li-fixed">Hello <span>'Name'</span>!</li>
-                                    <li class="li-pf-item">
-                                        <a href="">Your Request</a>
-                                    </li>
-                                    <li class="li-pf-item">
-                                        <a href="">Your Profile</a>
-                                    </li>
-                                    <li class="li-pf-item">
-                                        <a href="">Change Password</a>
-                                    </li>
-                                    <li class="li-pf-item">
-                                        <a href="">Logout</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            @if (Request.IsAuthenticated)
+                            {
+                            <a class="link">@User.Identity.GetUserName()</a>
+                                <div class="toggle-field profile-tf">
+                                    <ul class="ul-profile">
+                                        <li class="li-fixed">Hello <span>'@User.Identity.GetUserName()'</span>!</li>
+                                        <li class="li-pf-item">
+                                            @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
+                                            <a href="">Your Request</a>
+                                        </li>
+                                        <li class="li-pf-item">
+                                            @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
+                                            <a href="">Your Profile</a>
+                                        </li>
+                                        <li class="li-pf-item">
+                                            @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
+                                            <a href="">Change Password</a>
+                                        </li>
+                                        <li class="li-pf-item">
+                                            <a href="">Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <a class="link">Login</a>
+                            }
+
                         </li>
                         <li class="nav-item">
                             <a class="link no-link" title="Notifications"><i class="far fa-bell"></i><span class="no-bgc">2</span></a>
@@ -167,46 +183,46 @@
 </html>
 
 @*<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
 
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>
-</html>*@
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+    </html>*@
