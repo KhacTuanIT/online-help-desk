@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -27,6 +28,9 @@ namespace OnlineHelpDesk.Models
 
         [DataType(DataType.DateTime)]
         public DateTime? CreatedAt { get; set; }
+
+        [Required]
+        public bool MustChangePassword { get; set; }
 
         public virtual ICollection<FacilityHead> FacilityHeads { get; set; }
 
@@ -67,9 +71,13 @@ namespace OnlineHelpDesk.Models
         public ApplicationDbContext()
             : base("OhdDatabase", throwIfV1Schema: false)
         {
-            Database.SetInitializer<ApplicationDbContext>(
-                new CreateDatabaseIfNotExists<ApplicationDbContext>()
-                );
+            //Database.SetInitializer<ApplicationDbContext>(
+            //    new CreateDatabaseIfNotExists<ApplicationDbContext>()
+            //    );
+
+            Database.SetInitializer(
+                new MigrateDatabaseToLatestVersion<ApplicationDbContext,
+                OnlineHelpDesk.Migrations.Configuration>());
         }
 
         public static ApplicationDbContext Create()
