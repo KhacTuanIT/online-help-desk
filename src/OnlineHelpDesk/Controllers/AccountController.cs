@@ -58,6 +58,13 @@ namespace OnlineHelpDesk.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            // Check URL and redirect if Account/Login in url
+            string requestUrl = Request.Url.AbsolutePath;
+            if (requestUrl.IndexOf("account/login", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return RedirectToRoute("Login");
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
