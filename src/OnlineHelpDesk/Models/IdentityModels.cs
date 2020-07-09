@@ -144,6 +144,5 @@ namespace OnlineHelpDesk.Models
                 .WithOptional(e => e.Petitioner)
                 .HasForeignKey(e => e.PetitionerId);
         }
-
     }
 }

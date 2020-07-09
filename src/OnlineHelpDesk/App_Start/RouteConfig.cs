@@ -21,6 +21,11 @@ namespace OnlineHelpDesk
                 url: "Login",
                 defaults: new { controller = "Account", action = "Login" });
 
+            routes.MapRoute(
+                name: "User",
+                url: "{userId}",
+                defaults: new { controller = "User", action = "Details", userId = "me" });
+
             //routes.MapRoute(
             //    name: "IgnoreHome",
             //    url: "Home",
