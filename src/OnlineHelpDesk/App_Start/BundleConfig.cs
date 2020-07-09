@@ -30,6 +30,10 @@ namespace OnlineHelpDesk
 
             bundles.Add(new StyleBundle("~/Content/login").Include(
                       "~/Content/login.css"));
+            bundles.Add(new ScriptBundle("~/bundles/custom").Include(
+                      "~/Scripts/index_custom.js"));
+            bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
+                      "~/Scripts/datatables.min.js"));
         }
     }
 }
