@@ -9,172 +9,135 @@
     <title>@ViewBag.Title - Online Help Desk</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
     <script src="https://kit.fontawesome.com/dc591b9115.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="header sticky-top fixed-top">
+    <div class="header-ad">
         <div class="container">
             <div class="row nav-ohd">
-                <div class="col-md-4 col-sm-2 justify-content-start logo-brand">
-                    <a href="#">
-                        <img src="~/Content/AppImages/icon.png" width="45" height="45">
+                <div class="col-md-12 col-sm-12 text-center logo-brand">
+                    <a href="~/">
+                        <img src="~/Content/AppImages/icon.png" width="60" height="60">
                     </a>
-                </div>
-                <div class="col-md-8 col-sm-10">
-                    <ul class="navbar-nav mr-auto ul-nav-ohd">
-                        <li class="nav-item">
-                            @Html.ActionLink("Home", "Index", "Home", new { @class= "link" })
-                        </li>
-                        <li class="nav-item li-menu-content">
-                            <a class="link">Menu</a>
-                            <div class="toggle-field menu-tf">
-                                <div class="row">
-                                    <div class="col-sm col-md-12">
-                                        <ul class="ul-menu">
-                                            <li class="li-menu-item text-center">
-                                                @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
-                                                <a href="">Create new request</a>
-                                            </li>
-                                            <li class="li-menu-item text-center"><a href="">List request</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            @if (Request.IsAuthenticated)
-                            {
-                            <a class="link">@User.Identity.GetUserName()</a>
-                                <div class="toggle-field profile-tf">
-                                    <ul class="ul-profile">
-                                        <li class="li-fixed">Hello <span>'@User.Identity.GetUserName()'</span>!</li>
-                                        <li class="li-pf-item">
-                                            @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
-                                            <a href="">Your Request</a>
-                                        </li>
-                                        <li class="li-pf-item">
-                                            @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
-                                            <a href="">Your Profile</a>
-                                        </li>
-                                        <li class="li-pf-item">
-                                            @*@Html.ActionLink("Home", "CreateNewRequest", "Create new request")*@
-                                            <a href="">Change Password</a>
-                                        </li>
-                                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                                        {
-                                            <li class="li-pf-item">
-
-                                                @Html.AntiForgeryToken()
-                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
-                                                
-                                            </li>
-                                        }
-                                        </ul>
-                                </div>
-                            }
-                            else
-                            {
-                                <a class="link">Login</a>
-                            }
-
-                        </li>
-                        <li class="nav-item">
-                            <a class="link no-link" title="Notifications"><i class="far fa-bell"></i><span class="no-bgc">2</span></a>
-                            <div class="toggle-field notification-tf">
-                                <ul class="ul-notification">
-                                    <li class="li-fixed"><i class="far fa-bell"></i> Notifications</li>
-                                    <li class="li-notification">
-                                        <ul class="ul-no-item">
-                                            <li class="li-no-item li-no-item-active">
-                                                <a href="" class="no-item">
-                                                    <div>
-                                                        <span class="no-name">TuanTK assign request for Blass</span>
-                                                    </div>
-                                                    <div><span class="no-time">6:00pm</span></div>
-                                                </a>
-                                            </li>
-                                            <li class="li-no-item">
-                                                <a href="" class="no-item">
-                                                    <div>
-                                                        <span class="no-name">TuanTK assign request for Blass</span>
-                                                    </div>
-                                                    <div><span class="no-time">6:00pm</span></div>
-                                                </a>
-                                            </li>
-                                            <li class="li-no-item">
-                                                <a href="" class="no-item">
-                                                    <div>
-                                                        <span class="no-name">TuanTK assign request for Blass</span>
-                                                    </div>
-                                                    <div><span class="no-time">6:00pm</span></div>
-                                                </a>
-                                            </li>
-                                            <li class="li-no-item">
-                                                <a href="" class="no-item">
-                                                    <div>
-                                                        <span class="no-name">TuanTK assign request for Blass</span>
-                                                    </div>
-                                                    <div><span class="no-time">6:00pm</span></div>
-                                                </a>
-                                            </li>
-                                            <li class="li-no-item">
-                                                <a href="" class="no-item">
-                                                    <div>
-                                                        <span class="no-name">TuanTK assign request for Blass</span>
-                                                    </div>
-                                                    <div><span class="no-time">6:00pm</span></div>
-                                                </a>
-                                            </li>
-                                            <li class="li-no-item">
-                                                <a href="" class="no-item">
-                                                    <div>
-                                                        <span class="no-name">TuanTK assign request for Blass</span>
-                                                    </div>
-                                                    <div><span class="no-time">6:00pm</span></div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-no-more">
-                                        <a href="">More notifications</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="content">
+    <div class="header" id="header">
         <div class="current-page">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-6 current-page-left">
-                        OHD/ <span>@ViewBag.CurrentPage</span>
+                    <div class="col-sm-2 current-page-left">
+                        OHD/ <span>Home</span>
                     </div>
-                    <div class="col-sm-6 text-right current-page-right">
-                        <span class="avatar-box">
-                            <img src="~/Content/AppImages/useraccount.png" title="TuanTK" width="45" height="45">
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @RenderBody()
+                    <div class="col-md-10 col-sm-10">
+                        <ul class="navbar-nav mr-auto ul-nav-ohd">
+                            <li class="nav-item">
+                                <a class="link @ViewBag.Home" href="~/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="link @ViewBag.CreateNewRequest" href="">Create new request</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="link @ViewBag.ListRequest" href="~/Home/ListRequest">List request</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="link no-link" title="Notifications"><i class="far fa-bell animate__animated animate__headShake"></i><span class="no-bgc">2</span></a>
+                                <div class="toggle-field notification-tf">
+                                    <ul class="ul-notification">
+                                        <li class="li-fixed"><i class="far fa-bell"></i> Notifications</li>
+                                        <li class="li-notification">
+                                            <ul class="ul-no-item">
+                                                <li class="li-no-item li-no-item-active">
+                                                    <a href="" class="no-item">
+                                                        <div>
+                                                            <span class="no-name">TuanTK assign request for Blass</span>
+                                                        </div>
+                                                        <div><span class="no-time">6:00pm</span></div>
+                                                    </a>
+                                                </li>
+                                                <li class="li-no-item">
+                                                    <a href="" class="no-item">
+                                                        <div>
+                                                            <span class="no-name">TuanTK assign request for Blass</span>
+                                                        </div>
+                                                        <div><span class="no-time">6:00pm</span></div>
+                                                    </a>
+                                                </li>
+                                                <li class="li-no-item">
+                                                    <a href="" class="no-item">
+                                                        <div>
+                                                            <span class="no-name">TuanTK assign request for Blass</span>
+                                                        </div>
+                                                        <div><span class="no-time">6:00pm</span></div>
+                                                    </a>
+                                                </li>
+                                                <li class="li-no-item">
+                                                    <a href="" class="no-item">
+                                                        <div>
+                                                            <span class="no-name">TuanTK assign request for Blass</span>
+                                                        </div>
+                                                        <div><span class="no-time">6:00pm</span></div>
+                                                    </a>
+                                                </li>
+                                                <li class="li-no-item">
+                                                    <a href="" class="no-item">
+                                                        <div>
+                                                            <span class="no-name">TuanTK assign request for Blass</span>
+                                                        </div>
+                                                        <div><span class="no-time">6:00pm</span></div>
+                                                    </a>
+                                                </li>
+                                                <li class="li-no-item">
+                                                    <a href="" class="no-item">
+                                                        <div>
+                                                            <span class="no-name">TuanTK assign request for Blass</span><br>
+                                                            <span class="no-time">6:00pm</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="li-no-more">
+                                            <a href="">More notifications</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item nav-item-avatar">
+                                @if (Request.IsAuthenticated)
+                                {
+                                    <a class="avatar-box link"><img src="~/Content/AppImages/useraccount.png" title="@User.Identity.GetUserName()" width="45" height="45"></a>
+                                    <div class="toggle-field profile-tf">
+                                        <ul class="ul-profile">
+                                            <li class="li-fixed">Hello <span>'@User.Identity.GetUserName()'</span>!</li>
+                                            <li class="li-pf-item">
+                                                <a href="">Your Request</a>
+                                            </li>
+                                            <li class="li-pf-item">
+                                                <a href="">Your Profile</a>
+                                            </li>
+                                            <li class="li-pf-item">
+                                                @Html.ActionLink("Change Password", "ChangePassword", "Manage")
+                                            </li>
+                                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                            {
+                                                <li class="li-pf-item">
 
-        <div class="container-fluid footer">
-            <div class="row">
-                <div class="col-md-6 col-sm-12 text-center">
-                    <b>Online Help Desk system</b>
-                    <p>Internal use only.</p>
-                </div>
-                <div class="col-md-6 col-sm-12 text-center">
-                    <b>We are:</b>
-                    <div class="footer-right">
-                        <ul>
-                            <li>T</li>
+                                                    @Html.AntiForgeryToken()
+                                                    <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <a class="link" href="">Login</a>
+                                }
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -182,8 +145,29 @@
         </div>
     </div>
 
+    <div class="content">
+        @RenderBody()
+    </div>
+    <div id="footer" class="row footer none-margin">
+        <div class="">
+            <div class="col-md-6 col-sm-12 text-center">
+                <b>Online Help Desk system</b>
+                <p>Internal use only.</p>
+            </div>
+            <div class="col-md-6 col-sm-12 text-center">
+                <b>We are:</b>
+                <div class="footer-right">
+                    <ul>
+                        <li>T</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/custom")
     @RenderSection("scripts", required: false)
 </body>
 </html>

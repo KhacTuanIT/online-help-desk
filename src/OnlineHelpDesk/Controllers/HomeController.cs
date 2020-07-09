@@ -27,5 +27,10 @@ namespace OnlineHelpDesk.Controllers
 
             return View();
         }
+
+        public ActionResult ListRequest()
+        {
+            return View();
+        }
     }
 }
