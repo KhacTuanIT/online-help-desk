@@ -29,7 +29,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-2 current-page-left">
-                        OHD/ <span>Home</span>
+                        OHD/ <span>@ViewBag.CurrentPage</span>
                     </div>
                     <div class="col-md-10 col-sm-10">
                         <ul class="navbar-nav mr-auto ul-nav-ohd">
@@ -146,7 +146,9 @@
     </div>
 
     <div class="content">
-        @RenderBody()
+        <div class="container content-ohd">
+            @RenderBody()
+        </div>
     </div>
     <div id="footer" class="row footer none-margin">
         <div class="">
