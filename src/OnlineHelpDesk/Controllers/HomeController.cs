@@ -32,5 +32,10 @@ namespace OnlineHelpDesk.Controllers
         {
             return View();
         }
+
+        public ActionResult CreateNewRequest()
+        {
+            return View();
+        }
     }
 }
