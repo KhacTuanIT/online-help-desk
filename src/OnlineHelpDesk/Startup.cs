@@ -16,6 +16,21 @@ namespace OnlineHelpDesk
 
             // Initialize default roles and admin
             DatabaseHelper.InitializeIdentity();
+
+            // Initialize default facilities
+            DatabaseHelper.InitializeFacility();
+
+            // Initialize default status type
+            DatabaseHelper.InitializeStatusType();
+
+            // Initialize default request type
+            DatabaseHelper.InitializeRequestType();
+
+            // Initialize default equipment type
+            DatabaseHelper.InitializeEquipmentType();
+
+            // Initialize default equipments
+            DatabaseHelper.InitializeEquipment();
         }
     }
 }

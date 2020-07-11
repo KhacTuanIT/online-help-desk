@@ -318,7 +318,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addForm()">Add Form Assign</button>
+                <button type="button" class="btn btn-primary" onclick="addForm();">Add Form Response</button>
+                <button type="button" class="btn btn-primary" onclick="doneForm();">Done Request</button>
+                <button type="button" class="btn btn-primary" onclick="addRefuseForm();">Close Request</button>
             </div>
         </div>
     </div>
@@ -341,6 +343,18 @@
             formResponse.html("");
             formResponse.addClass("row form-assign");
             formResponse.html('<div class="col-sm-12 text-center form-body-title">Assign Form</div><form class="col-sm-12 mar-v-10" method="post" action=""><div class="col-sm-12 none-padding pad-v-3"><div class="col-sm-3 text-right pad-5">Assigned Head:</div><div class="col-sm-9 pad-5"><select id="assignedHeadId" class="form-control"><option>Hieu V</option><option>Nam P</option></select></div></div><div class="col-sm-12 none-padding pad-v-3"><div class="col-sm-3 text-right pad-5">Status message:</div><div class="col-sm-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage"rows="5"></textarea></div></div><div class="col-sm-12 none-padding pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="submit" class="btn btn-primary">Submit</button></div></form>');
+        }
+        function addRefuseForm() {
+            formResponse.remove("row form-assign");
+            formResponse.html("");
+            formResponse.addClass("row form-assign");
+            formResponse.html('<div class="col-sm-12 text-center form-body-title">Close Request</div><form class="col-sm-12 mar-v-10"><div class="col-sm-12 none-padding pad-v-3"><div class="col-sm-3 text-right pad-5">Reason:</div><div class="col-sm-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage" rows="5"></textarea></div></div><div class="col-sm-12 none-padding pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="button" class="btn btn-primary">Submit</button></div></form>');
+        }
+        function doneForm() {
+            formResponse.remove("row form-assign");
+            formResponse.html("");
+            formResponse.addClass("row form-assign");
+            formResponse.html('<div class="col-sm-12 text-center form-body-title">Done Request</div><form class="col-sm-12 mar-v-10"><div class="col-sm-12 none-padding pad-v-3"><div class="col-sm-3 text-right pad-5">Message:</div><div class="col-sm-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage" rows="5"></textarea></div></div><div class="col-sm-12 none-padding pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="button" class="btn btn-primary">Done</button></div></form>');
         }
     </script>
 }
