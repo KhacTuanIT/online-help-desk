@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -58,6 +59,9 @@ namespace OnlineHelpDesk.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (User?.Identity.IsAuthenticated == true)
+                return RedirectToAction("Index", "Home");
+
             // Check URL and redirect if Account/Login in url
             string requestUrl = Request.Url.AbsolutePath;
             if (requestUrl.IndexOf("account/login", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -174,7 +178,8 @@ namespace OnlineHelpDesk.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.UserName,
+                    UserName = model.UserIdentityCode,
+                    UserIdentityCode = model.UserIdentityCode,
                     Email = model.Email,
                     FullName = model.FullName,
                     CreatedAt = DateTime.Now
