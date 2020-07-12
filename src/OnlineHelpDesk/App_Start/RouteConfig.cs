@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -21,6 +22,17 @@ namespace OnlineHelpDesk
                 url: "Login",
                 defaults: new { controller = "Account", action = "Login" });
 
+            routes.MapRoute(
+                name: "Profile",
+                url: "{user}",
+                defaults: new { controller = "User", action = "Index" },
+                constraints: new { user = new VanityUrlContraint() });
+
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+
             //routes.MapRoute(
             //    name: "IgnoreHome",
             //    url: "Home",
@@ -31,11 +43,21 @@ namespace OnlineHelpDesk
             //    url: "{controllerName}/Index/{*pathInfo}",
             //    defaults: new { controller = "Error", action = "NotFound" });
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+        }
+    }
 
+    // Thanks to @shakib
+    // https://stackoverflow.com/questions/13558541/what-kind-of-route-would-i-need-to-provide-vanity-urls
+    public class VanityUrlContraint : IRouteConstraint
+    {
+        private static readonly string[] Controllers =
+            Assembly.GetExecutingAssembly().GetTypes().Where(x => typeof(IController).IsAssignableFrom(x))
+                .Select(x => x.Name.ToLower().Replace("controller", "")).ToArray();
+
+        public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values,
+                          RouteDirection routeDirection)
+        {
+            return !Controllers.Contains(values[parameterName].ToString().ToLower());
         }
     }
 }

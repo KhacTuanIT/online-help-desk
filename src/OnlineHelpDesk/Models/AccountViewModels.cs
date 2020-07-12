@@ -65,9 +65,9 @@ namespace OnlineHelpDesk.Models
     public class RegisterViewModel
     {
         [Required]
-        [StringLength(32, ErrorMessage = "The {0} must be at least {2} character and less than {1} character", MinimumLength = 6)]
-        [Display(Name = "Username")]
-        public string UserName { get; set; }
+        [StringLength(32, ErrorMessage = "The {0} must be at least {2} character and less than {1} character", MinimumLength = 8)]
+        [Display(Name = "User Identity Code")]
+        public string UserIdentityCode { get; set; }
 
         [Required]
         [EmailAddress]

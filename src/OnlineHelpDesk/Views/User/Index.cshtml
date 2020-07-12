@@ -1,0 +1,10 @@
+﻿@model OnlineHelpDesk.Models.ApplicationUser
+@{
+    ViewBag.Title = "Profile details";
+}
+
+@if (Model != null)
+{
+    <h1>@Model.Email</h1>
+    <h2>@Model.FullName</h2>
+}

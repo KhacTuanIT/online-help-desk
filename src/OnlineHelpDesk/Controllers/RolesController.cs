@@ -10,7 +10,7 @@ using OnlineHelpDesk.Models;
 
 namespace OnlineHelpDesk.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class RolesController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
