@@ -184,13 +184,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202007060451159_Initialize.cs" />
-    <Compile Include="Migrations\202007060451159_Initialize.Designer.cs">
-      <DependentUpon>202007060451159_Initialize.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007071853467_MustChangePassword.cs" />
-    <Compile Include="Migrations\202007071853467_MustChangePassword.Designer.cs">
-      <DependentUpon>202007071853467_MustChangePassword.cs</DependentUpon>
+    <Compile Include="Migrations\202007121941467_initialize.cs" />
+    <Compile Include="Migrations\202007121941467_initialize.Designer.cs">
+      <DependentUpon>202007121941467_initialize.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
@@ -496,11 +492,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202007060451159_Initialize.resx">
-      <DependentUpon>202007060451159_Initialize.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007071853467_MustChangePassword.resx">
-      <DependentUpon>202007071853467_MustChangePassword.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202007121941467_initialize.resx">
+      <DependentUpon>202007121941467_initialize.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

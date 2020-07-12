@@ -7,13 +7,13 @@ namespace OnlineHelpDesk.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Initialize : IMigrationMetadata
+    public sealed partial class initialize : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initialize));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initialize));
         
         string IMigrationMetadata.Id
         {
-            get { return "202007060451159_Initialize"; }
+            get { return "202007121941467_initialize"; }
         }
         
         string IMigrationMetadata.Source

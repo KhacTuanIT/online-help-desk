@@ -1,5 +1,6 @@
 namespace OnlineHelpDesk.Migrations
 {
+    using OnlineHelpDesk.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -9,7 +10,7 @@ namespace OnlineHelpDesk.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(OnlineHelpDesk.Models.ApplicationDbContext context)
@@ -17,9 +18,7 @@ namespace OnlineHelpDesk.Migrations
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
-
-            // base.Seed(context);
+            //  to avoid creating duplicate seed data
         }
     }
 }
