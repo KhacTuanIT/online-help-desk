@@ -34,7 +34,18 @@ namespace OnlineHelpDesk.Controllers
             {
                 string userName = User.Identity.Name;
                 appUser = UserManager.FindByName(userName);
-                return View(appUser);
+
+                var profileUser = new ProfileViewModel()
+                {
+                    Email = appUser.Email,
+                    FullName = appUser.FullName,
+                    UserIdentity = appUser.UserIdentityCode,
+                    Role = appUser.Roles.FirstOrDefault().ToString(),
+                    Address = appUser.Address,
+                    ProfilePicture = appUser.Avatar ?? null
+                };
+
+                return View(profileUser);
             }
             else if (!User.IsInRole("SuperAdmin") && user != "admin")
             {
@@ -43,6 +54,16 @@ namespace OnlineHelpDesk.Controllers
                 {
                     return HttpNotFound();
                 }
+
+                var profileUser = new ProfileViewModel()
+                {
+                    Email = appUser.Email,
+                    FullName = appUser.FullName,
+                    UserIdentity = appUser.UserIdentityCode,
+                    Role = appUser.Roles.FirstOrDefault().ToString(),
+                    Address = appUser.Address,
+                    ProfilePicture = appUser.Avatar ?? null
+                };
                 return View(appUser);
             }
 
