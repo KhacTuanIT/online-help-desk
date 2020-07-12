@@ -1,4 +1,8 @@
 ﻿@using Microsoft.AspNet.Identity
+@model OnlineHelpDesk.Models.HomeViewModel
+@{
+    List<OnlineHelpDesk.Models.Notification> notifications = Model.Notifications;
+}
 
 <!DOCTYPE html>
 <html>
@@ -43,38 +47,53 @@
                     </form>
                 </li>
                 <li class="nav-item dropdown mr-3">
-                    <a id="notifications" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle text-gray-400 px-1"><i class="fa fa-bell"></i><span class="notification-icon"></span></a>
+                    <a id="notifications" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle text-gray-400 px-1"><i class="fa fa-bell"></i>@if (notifications != null) { if (notifications.Count() > 0)
+                        {<span class="notification-icon"></span> }
+                    } </a>
                     <div aria-labelledby="notifications" class="dropdown-menu">
-                        <a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <div class="icon icon-sm bg-violet text-white"><i class="fab fa-twitter"></i></div>
-                                <div class="text ml-2">
-                                    <p class="mb-0">You have 2 followers</p>
+                        @if (notifications != null)
+                        {
+                            if (notifications.Count() > 0)
+                            {
+                                foreach (var item in notifications)
+                                {
+                                    <a href="#" class="dropdown-item">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon icon-sm bg-violet text-white"><i class="fa fa-envelope-o"></i></div>
+                                            <div class="text ml-2">
+                                                <p class="mb-0">@item.Message</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                }
+                                <div class="dropdown-divider"></div><a href="#" class="dropdown-item text-center"><small class="font-weight-bold headings-font-family text-uppercase">View all notifications</small></a>
+                            }
+                            else
+                            {
+                                <a class="dropdown-item">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon icon-sm bg-violet text-white"><i class="fa fa-info"></i></div>
+                                        <div class="text ml-2">
+                                            <p class="mb-0">Not found new notifications</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <a class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon icon-sm bg-violet text-white"><i class="fa fa-info"></i></div>
+                                    <div class="text ml-2">
+                                        <p class="mb-0">Not found new notifications</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a><a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <div class="icon icon-sm bg-green text-white"><i class="fas fa-envelope"></i></div>
-                                <div class="text ml-2">
-                                    <p class="mb-0">You have 6 new messages</p>
-                                </div>
-                            </div>
-                        </a><a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <div class="icon icon-sm bg-blue text-white"><i class="fas fa-upload"></i></div>
-                                <div class="text ml-2">
-                                    <p class="mb-0">Server rebooted</p>
-                                </div>
-                            </div>
-                        </a><a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <div class="icon icon-sm bg-violet text-white"><i class="fab fa-twitter"></i></div>
-                                <div class="text ml-2">
-                                    <p class="mb-0">You have 2 followers</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div><a href="#" class="dropdown-item text-center"><small class="font-weight-bold headings-font-family text-uppercase">View all notifications</small></a>
+                            </a>
+                        }
+
+
+
                     </div>
                 </li>
                 <li class="nav-item dropdown ml-auto">
@@ -82,8 +101,8 @@
                     <div aria-labelledby="userInfo" class="dropdown-menu">
                         @if (Request.IsAuthenticated)
                         {
-                            <a href="#" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">@User.Identity.GetUserName()</strong><small>Web Developer</small></a>
-                            <div class="dropdown-divider"></div><a href="#" class="dropdown-item">Settings</a><a href="#" class="dropdown-item">Activity log       </a>
+                            <a class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">@User.Identity.GetUserName()</strong><small>Web Developer</small></a>
+                            <div class="dropdown-divider"></div><a href="~/" class="dropdown-item">Your Profile</a>if (!User.IsInRole("SuperAdmin")) {<a href="~/" class="dropdown-item">Your Request</a>}
                             using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
                                 @Html.AntiForgeryToken()
@@ -104,17 +123,44 @@
             <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">MAIN</div>
             <ul class="sidebar-menu list-unstyled">
                 <li class="sidebar-list-item"><a href="~/" class="sidebar-link text-muted @ViewBag.HomeActive"><i class="o-home-1 mr-3 text-gray"></i><span>Home</span></a></li>
-                <li class="sidebar-list-item"><a href="~/Home/ListRequest" class="sidebar-link text-muted @ViewBag.ListActive"><i class="o-table-content-1 mr-3 text-gray"></i><span>List Request</span></a></li>
-                <li class="sidebar-list-item"><a href="~/" class="sidebar-link text-muted @ViewBag.NewRequestActive"><i class="o-survey-1 mr-3 text-gray"></i><span>New Request</span></a></li>
-                <li class="sidebar-list-item"><a href="~/" class="sidebar-link text-muted @ViewBag.OtherActive"><i class="o-survey-1 mr-3 text-gray"></i><span>Forms</span></a></li>
+                @if (User.IsInRole("SuperAdmin") || User.IsInRole("FacilityHead"))
+                {
+                    <li class="sidebar-list-item"><a href="~/Home/ListRequest" class="sidebar-link text-muted @ViewBag.ListActive"><i class="o-table-content-1 mr-3 text-gray"></i><span>List Request</span></a></li>
+                }
+                @if (User.IsInRole("Assignor"))
+                {
+                    <li class="sidebar-list-item"><a href="~/" class="sidebar-link text-muted @ViewBag.AssignedRequestActive"><i class="o-survey-1 mr-3 text-gray"></i><span>Assigned Request</span></a></li>
+                }
+                @if (!User.IsInRole("SuperAdmin"))
+                {
+                    <li class="sidebar-list-item"><a href="~/Home/CreateNewRequest" class="sidebar-link text-muted @ViewBag.NewRequestActive"><i class="o-survey-1 mr-3 text-gray"></i><span>New Request</span></a></li>
+                }
                 <li class="sidebar-list-item">
                     <a href="#" data-toggle="collapse" data-target="#pages" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>Menu</span></a>
                     <div id="pages" class="collapse">
                         <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
-                            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Page one</a></li>
-                            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Page two</a></li>
-                            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Page three</a></li>
-                            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Page four</a></li>
+                            <li class="sidebar-list-item">
+                                <a href="#" data-toggle="collapse" data-target="#informations" aria-expanded="false" aria-controls="informations" class="sidebar-link text-muted pl-lg-5"><i class="fa fa-address-card mr-3 text-gray"></i><span>Information</span></a>
+                                <div id="informations" class="collapse">
+                                    <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
+                                        <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Facility-Head</a></li>
+                                        <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Assignor</a></li>
+                                        <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Student</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-list-item">
+                                <a href="#" data-toggle="collapse" data-target="#manages" aria-expanded="false" aria-controls="manages" class="sidebar-link text-muted pl-lg-5"><i class="fa fa-tasks mr-3 text-gray"></i><span>Manage</span></a>
+                                <div id="manages" class="collapse">
+                                    <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
+                                        <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Facility-Head</a></li>
+                                        <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Assigner</a></li>
+                                        <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Student</a></li>
+                                        <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Facility</a></li>
+                                        <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted pl-lg-5">Equipment</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </li>

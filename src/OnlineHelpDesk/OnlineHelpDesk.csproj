@@ -477,6 +477,7 @@
     <Content Include="Views\Home\ListRequest.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\List.cshtml" />
+    <Content Include="Views\Home\CreateNewRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
