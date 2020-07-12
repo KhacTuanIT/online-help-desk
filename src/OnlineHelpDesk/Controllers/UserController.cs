@@ -32,6 +32,11 @@ namespace OnlineHelpDesk.Controllers
             ApplicationUser appUser;
             if (string.IsNullOrEmpty(user) || user == "me")
             {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Login", "Account", new { returnUrl = "/me" });
+                }
+
                 string userName = User.Identity.Name;
                 appUser = UserManager.FindByName(userName);
 
@@ -41,8 +46,8 @@ namespace OnlineHelpDesk.Controllers
                     FullName = appUser.FullName,
                     UserIdentity = appUser.UserIdentityCode,
                     Role = appUser.Roles.FirstOrDefault().ToString(),
-                    Address = appUser.Address,
-                    ProfilePicture = appUser.Avatar ?? null
+                    Address = appUser.Address ?? "",
+                    ProfilePicture = appUser.Avatar ?? ""
                 };
 
                 return View(profileUser);
@@ -61,8 +66,8 @@ namespace OnlineHelpDesk.Controllers
                     FullName = appUser.FullName,
                     UserIdentity = appUser.UserIdentityCode,
                     Role = appUser.Roles.FirstOrDefault().ToString(),
-                    Address = appUser.Address,
-                    ProfilePicture = appUser.Avatar ?? null
+                    Address = appUser.Address ?? "",
+                    ProfilePicture = appUser.Avatar ?? ""
                 };
                 return View(appUser);
             }
