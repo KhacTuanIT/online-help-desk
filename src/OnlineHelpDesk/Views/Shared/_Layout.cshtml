@@ -1,8 +1,8 @@
-﻿@using Microsoft.AspNet.Identity
-@model OnlineHelpDesk.Models.HomeViewModel
-@{
-    List<OnlineHelpDesk.Models.Notification> notifications = Model.Notifications;
-}
+﻿@*@using Microsoft.AspNet.Identity
+    @model OnlineHelpDesk.Models.HomeViewModel
+    @{
+        List<OnlineHelpDesk.Models.Notification> notifications = Model.Notifications;
+    }*@
 
 <!DOCTYPE html>
 <html>
@@ -46,10 +46,15 @@
                         </div>
                     </form>
                 </li>
-                <li class="nav-item dropdown mr-3">
-                    <a id="notifications" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle text-gray-400 px-1"><i class="fa fa-bell"></i>@if (notifications != null) { if (notifications.Count() > 0)
-                        {<span class="notification-icon"></span> }
-                    } </a>
+                @*<li class="nav-item dropdown mr-3">
+                    <a id="notifications" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle text-gray-400 px-1">
+                         <i> class="fa fa-bell"></i>
+                        @if (notifications != null)
+                        {
+                            if (notifications.Count() > 0)
+                            {<span class="notification-icon"></span>}
+                         }
+                    </a>
                     <div aria-labelledby="notifications" class="dropdown-menu">
                         @if (notifications != null)
                         {
@@ -57,64 +62,58 @@
                             {
                                 foreach (var item in notifications)
                                 {
-                                    <a href="#" class="dropdown-item">
-                                        <div class="d-flex align-items-center">
-                                            <div class="icon icon-sm bg-violet text-white"><i class="fa fa-envelope-o"></i></div>
-                                            <div class="text ml-2">
-                                                <p class="mb-0">@item.Message</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                }
-                                <div class="dropdown-divider"></div><a href="#" class="dropdown-item text-center"><small class="font-weight-bold headings-font-family text-uppercase">View all notifications</small></a>
-                            }
-                            else
-                            {
-                                <a class="dropdown-item">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon icon-sm bg-violet text-white"><i class="fa fa-info"></i></div>
-                                        <div class="text ml-2">
-                                            <p class="mb-0">Not found new notifications</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            }
-                        }
-                        else
-                        {
-                            <a class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon icon-sm bg-violet text-white"><i class="fa fa-info"></i></div>
-                                    <div class="text ml-2">
-                                        <p class="mb-0">Not found new notifications</p>
-                                    </div>
-                                </div>
-                            </a>
-                        }
-
-
-
+            <a href="#" class="dropdown-item">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-sm bg-violet text-white"><i class="fa fa-envelope-o"></i></div>
+                    <div class="text ml-2">
+                        <p class="mb-0">@item.Message</p>
                     </div>
-                </li>
-                <li class="nav-item dropdown ml-auto">
+                </div>
+            </a> }
+<div class="dropdown-divider"></div><a href="#" class="dropdown-item text-center"><small class="font-weight-bold headings-font-family text-uppercase">View all notifications</small></a> }
+else
+{
+<a class="dropdown-item">
+    <div class="d-flex align-items-center">
+        <div class="icon icon-sm bg-violet text-white"><i class="fa fa-info"></i></div>
+        <div class="text ml-2">
+            <p class="mb-0">Not found new notifications</p>
+        </div>
+    </div>
+</a> }
+}
+                    else
+                    {
+                    <a class="dropdown-item">
+                        <div class="d-flex align-items-center">
+                            <div class="icon icon-sm bg-violet text-white"><i class="fa fa-info"></i></div>
+                            <div class="text ml-2">
+                                <p class="mb-0">Not found new notifications</p>
+                            </div>
+                        </div>
+                    </a>}
+                    </div>
+                </li>*@
+
+                @*<li class="nav-item dropdown ml-auto">
                     <a id="userInfo" href="~/" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><img src="~/Content/AppImages/useraccount.png" alt="Jason Doe" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"></a>
                     <div aria-labelledby="userInfo" class="dropdown-menu">
                         @if (Request.IsAuthenticated)
                         {
-                            <a class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">@User.Identity.GetUserName()</strong><small>Web Developer</small></a>
-                            <div class="dropdown-divider"></div><a href="~/" class="dropdown-item">Your Profile</a>if (!User.IsInRole("SuperAdmin")) {<a href="~/" class="dropdown-item">Your Request</a>}
+            <a class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">@User.Identity.GetUserName()</strong><small>Web Developer</small></a>
+                            <div class="dropdown-divider"></div><a href="~/" class="dropdown-item">Your Profile</a>if (!User.IsInRole("SuperAdmin"))
+                            {<a href="~/" class="dropdown-item">Your Request</a>}
                             using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
-                                @Html.AntiForgeryToken()
-                                <div class="dropdown-divider"></div><a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Logout</a>
-                            }
+            @Html.AntiForgeryToken()
+                                <div class="dropdown-divider"></div><a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Logout</a> }
                         }
                         else
                         {
-                            <div class="dropdown-divider"></div><a href="~/Login" class="dropdown-item">Login</a>
-                        }
+            <div class="dropdown-divider"></div><a href="~/Login" class="dropdown-item">Login</a>}
                     </div>
-                </li>
+                </li>*@
+
             </ul>
         </nav>
     </header>
@@ -125,16 +124,16 @@
                 <li class="sidebar-list-item"><a href="~/" class="sidebar-link text-muted @ViewBag.HomeActive"><i class="o-home-1 mr-3 text-gray"></i><span>Home</span></a></li>
                 @if (User.IsInRole("SuperAdmin") || User.IsInRole("FacilityHead"))
                 {
-                    <li class="sidebar-list-item"><a href="~/Home/ListRequest" class="sidebar-link text-muted @ViewBag.ListActive"><i class="o-table-content-1 mr-3 text-gray"></i><span>List Request</span></a></li>
-                }
+    <li class="sidebar-list-item"><a href="~/Home/ListRequest" class="sidebar-link text-muted @ViewBag.ListActive"><i class="o-table-content-1 mr-3 text-gray"></i><span>List Request</span></a></li>
+}
                 @if (User.IsInRole("Assignor"))
                 {
-                    <li class="sidebar-list-item"><a href="~/" class="sidebar-link text-muted @ViewBag.AssignedRequestActive"><i class="o-survey-1 mr-3 text-gray"></i><span>Assigned Request</span></a></li>
-                }
+    <li class="sidebar-list-item"><a href="~/" class="sidebar-link text-muted @ViewBag.AssignedRequestActive"><i class="o-survey-1 mr-3 text-gray"></i><span>Assigned Request</span></a></li>
+}
                 @if (!User.IsInRole("SuperAdmin"))
                 {
-                    <li class="sidebar-list-item"><a href="~/Home/CreateNewRequest" class="sidebar-link text-muted @ViewBag.NewRequestActive"><i class="o-survey-1 mr-3 text-gray"></i><span>New Request</span></a></li>
-                }
+    <li class="sidebar-list-item"><a href="~/Home/CreateNewRequest" class="sidebar-link text-muted @ViewBag.NewRequestActive"><i class="o-survey-1 mr-3 text-gray"></i><span>New Request</span></a></li>
+}
                 <li class="sidebar-list-item">
                     <a href="#" data-toggle="collapse" data-target="#pages" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>Menu</span></a>
                     <div id="pages" class="collapse">
