@@ -1,11 +1,137 @@
-﻿@{
+﻿@model OnlineHelpDesk.Models.HomeViewModel
+@{
+    int requestCount = Model.Requests;
+    int userCount = Model.Users;
+    int facilityCount = Model.Facilities;
+    int equipmentCount = Model.Equipments;
+}
+
+@{
     ViewBag.CurrentPage = "Home";
     ViewBag.Title = "Home";
-    ViewBag.Home = "active-link";
+    ViewBag.HomeActive = "active";
 }
 
 
+<section class="py-5">
     <div class="row">
+        <div class="col-xl-3 col-lg-6 mb-4 mb-xl-0">
+            <div class="bg-white shadow roundy p-4 h-100 d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-violet"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Requests</h6><span class="text-gray">@requestCount</span>
+                    </div>
+                </div>
+                <div class="icon text-white bg-violet"><i class="far fa-clipboard"></i></div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 mb-4 mb-xl-0">
+            <div class="bg-white shadow roundy p-4 h-100 d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-green"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Users</h6><span class="text-gray">@userCount</span>
+                    </div>
+                </div>
+                <div class="icon text-white bg-green"><i class="fa fa-user"></i></div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 mb-4 mb-xl-0">
+            <div class="bg-white shadow roundy p-4 h-100 d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-blue"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Facilities</h6><span class="text-gray">@facilityCount</span>
+                    </div>
+                </div>
+                <div class="icon text-white bg-blue"><i class="fa fa-building"></i></div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 mb-4 mb-xl-0">
+            <div class="bg-white shadow roundy p-4 h-100 d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-red"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Equipments</h6><span class="text-gray">@equipmentCount</span>
+                    </div>
+                </div>
+                <div class="icon text-white bg-red"><i class="fa fa-inbox"></i></div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="row mb-4">
+        <div class="col-lg-8 mb-4 mb-lg-0">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h6 text-uppercase mb-0">Current server uptime</h2>
+                </div>
+                <div class="card-body">
+                    <p class="text-gray">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <div class="chart-holder">
+                        <canvas id="lineChart1" style="max-height: 14rem !important;" class="w-100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4 mb-lg-0 pl-lg-0">
+            <div class="bg-white shadow roundy px-4 py-3 d-flex align-items-center justify-content-between mb-4">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-violet"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Created Request</h6><span class="text-gray">127 requests</span>
+                    </div>
+                </div>
+                <div class="icon bg-violet text-white"><i class="fas fa fa-sticky-note"></i></div>
+            </div>
+            <div class="bg-white shadow roundy px-4 py-3 d-flex align-items-center justify-content-between mb-4">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-gray-200"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Assigned Request</h6><span class="text-gray">214 requests</span>
+                    </div>
+                </div>
+                <div class="icon bg-gray-200 text-white"><i class="fa fa-check"></i></div>
+            </div>
+            <div class="bg-white shadow roundy px-4 py-3 d-flex align-items-center justify-content-between mb-4">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-gray-500"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Processing Request</h6><span class="text-gray">25 requests</span>
+                    </div>
+                </div>
+                <div class="icon bg-gray-500 text-white"><i class="fas fa fa-spinner"></i></div>
+            </div>
+            <div class="bg-white shadow roundy px-4 py-3 d-flex align-items-center justify-content-between mb-4">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-green"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Completed Request</h6><span class="text-gray">25 requests</span>
+                    </div>
+                </div>
+                <div class="icon bg-green text-white"><i class="fa fa-clipboard-check"></i></div>
+            </div>
+            <div class="bg-white shadow roundy px-4 py-3 d-flex align-items-center justify-content-between mb-4">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <div class="dot mr-3 bg-red"></div>
+                    <div class="text">
+                        <h6 class="mb-0">Closed Request</h6><span class="text-gray">25 requests</span>
+                    </div>
+                </div>
+                <div class="icon bg-red text-white"><i class="fa fa-times-circle"></i></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script src="~/Scripts/AppJavaScript/chart/Chart.min.js"></script>
+    <script src="~/Scripts/AppJavaScript/js/charts-home.js"></script>
+}
+
+<!--    <div class="row">
         <div class="col-sm-12 text-center content-ohd-title">
             Online Help Desk
         </div>
@@ -46,4 +172,4 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->

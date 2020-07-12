@@ -1,312 +1,282 @@
-﻿
+﻿@model OnlineHelpDesk.Models.HomeViewModel
 @{
-    ViewBag.CurrentPage = "List Request";
-    ViewBag.Title = "List Request";
-    ViewBag.ListRequest = "active-link";
+    List<OnlineHelpDesk.Models.RequestViewModel> requestViewModels = Model.RequestViewModels;
 }
 
+@{
+    ViewBag.Title = "List Request";
+    ViewBag.ListActive = "active";
+}
+
+@Styles.Render("~/Content/modal")
+
+<section class="py-5">
     <div class="row">
-        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th class="th-sm">
-                        Petitioner
-
-                    </th>
-                    <th class="th-sm">
-                        Equipment
-
-                    </th>
-                    <th class="th-sm">
-                        Request Type
-
-                    </th>
-                    <th class="th-sm">
-                        Message
-
-                    </th>
-                    <th class="th-sm">
-                        Created Time
-
-                    </th>
-                    <th class="th-sm">
-                        Detail
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>CPU</td>
-                    <td>Need Help</td>
-                    <td>This cpu don't activity.</td>
-                    <td>6:00pm</td>
-                    <td class="text-center"><button class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>
-                        Petitioner
-                    </th>
-                    <th>
-                        Equipment
-                    </th>
-                    <th>
-                        Type
-                    </th>
-                    <th>
-                        Message
-                    </th>
-                    <th>
-                        Created Time
-                    </th>
-                    <th>
-                        Detail
-                    </th>
-                </tr>
-            </tfoot>
-        </table>
+        <div class="col-lg-12 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="text-uppercase mb-0">List Request</h6>
+                </div>
+                <div class="card-body">
+                    <table id="dtBasicExample" class="table table-striped table-hover card-text" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="th-sm">
+                                    Petitioner
+                                </th>
+                                <th class="th-sm">
+                                    Equipment
+                                </th>
+                                <th class="th-sm">
+                                    Faciliy
+                                </th>
+                                <th class="th-sm">
+                                    Request Type
+                                </th>
+                                <th class="th-sm">
+                                    Message
+                                </th>
+                                <th class="th-sm">
+                                    Created Time
+                                </th>
+                                <th class="th-sm">
+                                    Detail
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (requestViewModels.Count() > 0)
+                            {
+                                foreach (var item in requestViewModels)
+                                {
+                            <tr>
+                                <td>@item.Petitioner</td>
+                                <td>@item.Equipment</td>
+                                <td>@item.Facility</td>
+                                <td>@item.RequestType</td>
+                                <td>@item.RequestMessage</td>
+                                <td>@item.CreatedTime</td>
+                                <td class="text-center"><button data-request-id="@item.Id" data-toggle="modal" data-target="#requestModel" onclick="fillData(this);" class="btn btn-default none-padding pad-5" id="requestID" type="button"><i class="fa fa-search" aria-hidden="true"></i></button></td>
+                            </tr>
+                                }
+                            }
+                        <tr>
+                            <td colspan="7">Not found requests in system.</td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>
+                                    Petitioner
+                                </th>
+                                <th>
+                                    Equipment
+                                </th>
+                                <th>
+                                    Facility
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Message
+                                </th>
+                                <th>
+                                    Created Time
+                                </th>
+                                <th>
+                                    Detail
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#requestModel">
-    Launch demo modal
-</button>
 <!-- Modal -->
-<div class="modal fade" id="requestModel" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="requestModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title text-center" id="modalTitle">Request Detail #<span>2</span></h3>
+                <h5 class="modal-title" id="exampleModalLabel">Request #<span>2</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="row head-modal-body">
-                    <div class="col-sm-12 text-center modal-body-title">
+                    <div class="col-12 text-center modal-body-title">
                         Request
                     </div>
-                    <div class="col-sm-12 head-modal-box none-padding mar-v-10">
-                        <div class="col-sm-12 none-padding">
-                            <div class="col-sm-3 text-right pad-5 pad-v-3">
-                                Petitioner:
-                            </div>
-                            <div class="col-sm-9 pad-5 pad-v-3 head-modal-box-right">
-                                Tuan T
-                            </div>
-                        </div>
-                        <div class="col-sm-12 none-padding">
-                            <div class="col-sm-3 text-right pad-5 pad-v-3">
-                                Equipment:
-                            </div>
-                            <div class="col-sm-9 pad-5 pad-v-3 head-modal-box-right">
-                                CPU
+                    <div class="col-12 head-modal-box mar-v-10">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5 pad-v-3">
+                                    Petitioner:
+                                </div>
+                                <div class="col-9 pad-5 pad-v-3 head-modal-box-right">
+                                    Tuan T
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 none-padding">
-                            <div class="col-sm-3 text-right pad-5 pad-v-3">
-                                Type:
-                            </div>
-                            <div class="col-sm-9 pad-5 pad-v-3 head-modal-box-right">
-                                <span class="need-help">Need Help</span>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 none-padding">
-                            <div class="col-sm-3 text-right pad-5 pad-v-3">
-                                Message:
-                            </div>
-                            <div class="col-sm-9 pad-5 pad-v-3 head-modal-box-right">
-                                This CPU don't activity
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5 pad-v-3">
+                                    Equipment:
+                                </div>
+                                <div class="col-9 pad-5 pad-v-3 head-modal-box-right">
+                                    CPU
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 none-padding">
-                            <div class="col-sm-3 text-right pad-5 pad-v-3">
-                                Created Time:
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5 pad-v-3">
+                                    Type:
+                                </div>
+                                <div class="col-9 pad-5 pad-v-3 head-modal-box-right">
+                                    <span class="need-help">Need Help</span>
+                                </div>
                             </div>
-                            <div class="col-sm-9 pad-5 pad-v-3 head-modal-box-right">
-                                6:00pm
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5 pad-v-3">
+                                    Message:
+                                </div>
+                                <div class="col-9 pad-5 pad-v-3 head-modal-box-right">
+                                    This CPU don't activity
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5 pad-v-3">
+                                    Created Time:
+                                </div>
+                                <div class="col-9 pad-5 pad-v-3 head-modal-box-right">
+                                    6:00pm
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row content-modal-body">
-                    <div class="col-sm-12 text-center modal-body-title">
+                    <div class="col-12 text-center modal-body-title">
                         Response
                     </div>
-                    <div class="col-sm-12 response-box none-padding mar-v-10">
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
-                                Assigned Head:
-                            </div>
-                            <div class="col-sm-9 pad-5 response-box-right">
-                                Hieu V
-                            </div>
-                        </div>
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
-                                Status:
-                            </div>
-                            <div class="col-sm-9 pad-5 signed response-box-right">
-                                Signed
+                    <div class="col-12 response-box mar-v-10">
+                        <div class="col-12 pad-v-3">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5">
+                                    Assigned Head:
+                                </div>
+                                <div class="col-9 pad-5 response-box-right">
+                                    Hieu V
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
-                                Status message:
-                            </div>
-                            <div class="col-sm-9 pad-5 response-box-right">
-                                It so difficult
+                        <div class="col-12 pad-v-3">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5">
+                                    Status:
+                                </div>
+                                <div class="col-9 pad-5 signed response-box-right">
+                                    Signed
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
-                                Time:
+                        <div class="col-12 pad-v-3">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5">
+                                    Status message:
+                                </div>
+                                <div class="col-9 pad-5 response-box-right">
+                                    It so difficult
+                                </div>
                             </div>
-                            <div class="col-sm-9 pad-5 response-box-right">
-                                6:10pm
+                        </div>
+                        <div class="col-12 pad-v-3">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5">
+                                    Time:
+                                </div>
+                                <div class="col-9 pad-5 response-box-right">
+                                    6:10pm
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 response-box none-padding mar-v-10">
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
-                                Assigned Head:
-                            </div>
-                            <div class="col-sm-9 pad-5 response-box-right">
-                                Hieu V
-                            </div>
-                        </div>
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
-                                Status:
-                            </div>
-                            <div class="col-sm-9 pad-5 done response-box-right">
-                                Done
+                    <div class="col-12 response-box mar-v-10">
+                        <div class="col-12 pad-v-3">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5">
+                                    Assigned Head:
+                                </div>
+                                <div class="col-9 pad-5 response-box-right">
+                                    Hieu V
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
-                                Status message:
-                            </div>
-                            <div class="col-sm-9 pad-5 response-box-right">
-                                It so difficult
+                        <div class="col-12 pad-v-3">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5">
+                                    Status:
+                                </div>
+                                <div class="col-9 pad-5 done response-box-right">
+                                    Done
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
-                                Time:
+                        <div class="col-12 pad-v-3">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5">
+                                    Status message:
+                                </div>
+                                <div class="col-9 pad-5 response-box-right">
+                                    It so difficult
+                                </div>
                             </div>
-                            <div class="col-sm-9 pad-5 response-box-right">
-                                6:20pm
+                        </div>
+                        <div class="col-12 pad-v-3">
+                            <div class="row">
+                                <div class="col-3 text-right pad-5">
+                                    Time:
+                                </div>
+                                <div class="col-9 pad-5 response-box-right">
+                                    6:20pm
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- <div id="form-response" class="row form-assign">
-                    <div class="col-sm-12 text-center form-body-title">Assign Form</div>
-                    <form class="col-sm-12 mar-v-10">
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
+                    <div class="col-12 text-center form-body-title">Assign Form</div>
+                    <form class="col-12 mar-v-10">
+                        <div class="col-12 pad-v-3">
+                            <div class="col-3 text-right pad-5">
                                 Assigned Head:
                             </div>
-                            <div class="col-sm-9 pad-5">
+                            <div class="col-9 pad-5">
                                 <select id="assignedHeadId" class="form-control">
                                     <option>Hieu V</option>
                                     <option>Nam P</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-12 none-padding pad-v-3">
-                            <div class="col-sm-3 text-right pad-5">
+                        <div class="col-12 pad-v-3">
+                            <div class="col-3 text-right pad-5">
                                 Status message:
                             </div>
-                            <div class="col-sm-9 pad-5">
+                            <div class="col-9 pad-5">
                                 <textarea class="form-control" id="statusMessage" name="statusMessage"
                                 rows="5"></textarea>
                             </div>
                         </div>
-                        <div class="col-sm-12 none-padding pad-v-3 text-right">
+                        <div class="col-12 pad-v-3 text-right">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Submit</button>
                         </div>
@@ -324,7 +294,7 @@
             </div>
         </div>
     </div>
-
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/datatables")
     <script type="text/javascript">
@@ -332,6 +302,11 @@
             $('#dtBasicExample').DataTable();
             $('.dataTables_length').addClass('bs-select');
         });
+
+        function fillData(btnRequest) {
+            var requestId = btnRequest.getAttribute("data-request-id");
+            alert("the " + requestId);
+        }
 
         var formResponse = $("#form-response");
         function closeForm() {
@@ -342,19 +317,19 @@
             formResponse.remove("row form-assign");
             formResponse.html("");
             formResponse.addClass("row form-assign");
-            formResponse.html('<div class="col-sm-12 text-center form-body-title">Assign Form</div><form class="col-sm-12 mar-v-10" method="post" action=""><div class="col-sm-12 none-padding pad-v-3"><div class="col-sm-3 text-right pad-5">Assigned Head:</div><div class="col-sm-9 pad-5"><select id="assignedHeadId" class="form-control"><option>Hieu V</option><option>Nam P</option></select></div></div><div class="col-sm-12 none-padding pad-v-3"><div class="col-sm-3 text-right pad-5">Status message:</div><div class="col-sm-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage"rows="5"></textarea></div></div><div class="col-sm-12 none-padding pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="submit" class="btn btn-primary">Submit</button></div></form>');
+            formResponse.html('<div class="col-12 text-center form-body-title">Assign Form</div><form class="col-12 mar-v-10" method="post" action=""><div class="col-12 pad-v-3"><div class="row"><div class="col-3 text-right pad-5">Assigned Head:</div><div class="col-9 pad-5"><select id="assignedHeadId" class="form-control"><option>Hieu V</option><option>Nam P</option></select></div></div></div><div class="col-12 pad-v-3"><div class="row"><div class="col-3 text-right pad-5">Status message:</div><div class="col-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage"rows="5"></textarea></div></div></div><div class="col-12 pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="submit" class="btn btn-primary">Submit</button></div></form>');
         }
         function addRefuseForm() {
             formResponse.remove("row form-assign");
             formResponse.html("");
             formResponse.addClass("row form-assign");
-            formResponse.html('<div class="col-sm-12 text-center form-body-title">Close Request</div><form class="col-sm-12 mar-v-10"><div class="col-sm-12 none-padding pad-v-3"><div class="col-sm-3 text-right pad-5">Reason:</div><div class="col-sm-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage" rows="5"></textarea></div></div><div class="col-sm-12 none-padding pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="button" class="btn btn-primary">Submit</button></div></form>');
+            formResponse.html('<div class="col-12 text-center form-body-title">Close Request</div><form class="col-12 mar-v-10"><div class="col-12 pad-v-3"><div class="row"><div class="col-3 text-right pad-5">Reason:</div><div class="col-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage" rows="5"></textarea></div></div></div><div class="col-12 pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="button" class="btn btn-primary">Submit</button></div></form>');
         }
         function doneForm() {
             formResponse.remove("row form-assign");
             formResponse.html("");
             formResponse.addClass("row form-assign");
-            formResponse.html('<div class="col-sm-12 text-center form-body-title">Done Request</div><form class="col-sm-12 mar-v-10"><div class="col-sm-12 none-padding pad-v-3"><div class="col-sm-3 text-right pad-5">Message:</div><div class="col-sm-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage" rows="5"></textarea></div></div><div class="col-sm-12 none-padding pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="button" class="btn btn-primary">Done</button></div></form>');
+            formResponse.html('<div class="col-12 text-center form-body-title">Done Request</div><form class="col-12 mar-v-10"><div class="col-12 pad-v-3"><div class="row"><div class="col-3 text-right pad-5">Message:</div><div class="col-9 pad-5"><textarea class="form-control" id="statusMessage" name="statusMessage" rows="5"></textarea></div></div></div><div class="col-12 pad-v-3 text-right"><button type="button" class="btn btn-secondary mar-5" onclick="closeForm();">Close</button><button type="button" class="btn btn-primary">Done</button></div></form>');
         }
     </script>
 }

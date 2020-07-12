@@ -34,6 +34,21 @@ namespace OnlineHelpDesk
                       "~/Scripts/index_custom.js"));
             bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
                       "~/Scripts/datatables.min.js"));
+
+            bundles.Add(new StyleBundle("~/Content/stylesheet").Include(
+                      "~/Content/AppStyleSheet/bootstrap/bootstrap.min.css",
+                      "~/Content/AppStyleSheet/css/orionicons.css"));
+            bundles.Add(new ScriptBundle("~/bundles/javascript").Include(
+                      "~/Scripts/AppJavaScript/jquery/jquery.min.js",
+                      "~/Scripts/AppJavaScript/popper/umd/popper.min.js",
+                      "~/Scripts/AppJavaScript/bootstrap/bootstrap.min.js",
+                      "~/Scripts/AppJavaScript/jquery.cookie/jquery.cookie.js",
+                      "~/Scripts/AppJavaScript/js/front.js"));
+            bundles.Add(new ScriptBundle("~/bundles/chart").Include(
+                      "~/Scripts/AppJavaScript/chart/Chart.min.js",
+                      "~/Scripts/AppJavaScript/js/charts-home.js"));
+            bundles.Add(new StyleBundle("~/Content/modal").Include(
+                      "~/Content/AppStyleSheet/css/modal.css"));
         }
     }
 }
