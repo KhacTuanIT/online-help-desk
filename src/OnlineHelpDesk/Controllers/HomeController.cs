@@ -87,5 +87,10 @@ namespace OnlineHelpDesk.Controllers
                                                 select n).ToList();
             return View(new HomeViewModel() { Notifications = notifications, RequestViewModels = null });
         }
+
+        public ActionResult CreateNewRequest(NewRequestViewModel model)
+        {
+            return View();
+        }
     }
 }

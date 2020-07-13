@@ -21,6 +21,12 @@ namespace OnlineHelpDesk.Models
         public int Equipments { get; set; }
     }
 
+    public class NewRequestViewModel
+    {
+        public int EquipmentId { get; set; }
+        public string Message { get; set; }
+    }
+
     public class RequestViewModel
     {
         public int Id { get; set; }
