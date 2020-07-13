@@ -46,6 +46,8 @@ namespace OnlineHelpDesk
                       "~/Scripts/AppJavaScript/js/charts-home.js"));
             bundles.Add(new StyleBundle("~/Content/modal").Include(
                       "~/Content/AppStyleSheet/css/modal.css"));
+            bundles.Add(new ScriptBundle("~/bundles/notification").Include(
+                      "~/Scripts/AppJavaScript/js/notification-custom.js"));
         }
     }
 }

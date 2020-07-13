@@ -32,7 +32,7 @@
     <!-- sidebar -->
     <div class="d-flex align-items-stretch">
         
-        @RenderSection("sidebarSection", required: true)
+        @Html.Partial("_SidebarPartial")
         
         <div class="page-holder w-100 d-flex flex-wrap">
             <div class="container-fluid px-xl-5">
@@ -46,6 +46,7 @@
     <!-- JavaScript files-->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     @Scripts.Render("~/bundles/javascript")
+    @Scripts.Render("~/bundles/notification")
     @RenderSection("scripts", required: false)
 </body>
 </html>
