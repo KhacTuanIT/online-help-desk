@@ -16,11 +16,11 @@ namespace OnlineHelpDesk.Models
         }
 
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string artifact_name { get; set; }
+        public string TypeName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Equipment> Equipments { get; set; }

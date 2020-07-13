@@ -184,31 +184,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202007060451159_Initialize.cs" />
-    <Compile Include="Migrations\202007060451159_Initialize.Designer.cs">
-      <DependentUpon>202007060451159_Initialize.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007071853467_MustChangePassword.cs" />
-    <Compile Include="Migrations\202007071853467_MustChangePassword.Designer.cs">
-      <DependentUpon>202007071853467_MustChangePassword.cs</DependentUpon>
+    <Compile Include="Migrations\202007121941467_initialize.cs" />
+    <Compile Include="Migrations\202007121941467_initialize.Designer.cs">
+      <DependentUpon>202007121941467_initialize.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\DatabaseHelper.cs" />
     <Compile Include="Models\Equipment.cs" />
     <Compile Include="Models\EquipmentType.cs" />
     <Compile Include="Models\Facility.cs" />
     <Compile Include="Models\FacilityHead.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Notification.cs" />
-    <Compile Include="Models\OnlineHelpDeskViewModel.cs" />
+    <Compile Include="Models\ViewModels\OnlineHelpDeskViewModel.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\RequestStatus.cs" />
     <Compile Include="Models\RequestType.cs" />
     <Compile Include="Models\StatusType.cs" />
-    <Compile Include="Models\UserViewModels.cs" />
+    <Compile Include="Models\ViewModels\UserViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -501,11 +497,8 @@
     <Content Include="Views\Shared\Roles\_RolesLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202007060451159_Initialize.resx">
-      <DependentUpon>202007060451159_Initialize.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007071853467_MustChangePassword.resx">
-      <DependentUpon>202007071853467_MustChangePassword.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202007121941467_initialize.resx">
+      <DependentUpon>202007121941467_initialize.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

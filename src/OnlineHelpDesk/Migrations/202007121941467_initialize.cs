@@ -3,7 +3,7 @@ namespace OnlineHelpDesk.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initialize : DbMigration
+    public partial class initialize : DbMigration
     {
         public override void Up()
         {
@@ -25,10 +25,10 @@ namespace OnlineHelpDesk.Migrations
                 "dbo.EquipmentType",
                 c => new
                     {
-                        id = c.Int(nullable: false, identity: true),
-                        artifact_name = c.String(nullable: false, maxLength: 255),
+                        Id = c.Int(nullable: false, identity: true),
+                        TypeName = c.String(nullable: false, maxLength: 255),
                     })
-                .PrimaryKey(t => t.id);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Facility",
@@ -65,6 +65,7 @@ namespace OnlineHelpDesk.Migrations
                         Address = c.String(),
                         Avatar = c.String(),
                         CreatedAt = c.DateTime(),
+                        MustChangePassword = c.Boolean(nullable: false),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
