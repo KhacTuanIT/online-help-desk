@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Notifications = null;
+    ViewBag.Title = "Create New Request";
+    ViewBag.New = "active";
+    ViewBag.Role = "Student";
+    ViewBag.Avatar = "../Content/AppImages/useraccount.png";
+    Layout = "../_Layout.cshtml";
+}
+@section stylesheets {
+    @RenderSection("stylesheets", required: false)
+}
+@section sidebarSection {
+    @Html.Partial("_SidebarHomePartial")
+}
+
+@RenderBody()
+@section scripts {
+    @RenderSection("scripts", required: false)
+}
