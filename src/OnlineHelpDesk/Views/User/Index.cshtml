@@ -1,10 +1,66 @@
 ﻿@model OnlineHelpDesk.Models.ProfileViewModel
-@{
-    ViewBag.Title = "Profile details";
-}
 
-@if (Model != null)
-{
-    <h1>@Model.Email</h1>
-    <h2>@Model.FullName</h2>
+@{
+    ViewBag.Title = "Profile Details";
 }
+<section class="py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <dl class="dl-horizontal">
+                <dd>
+                    @Html.DisplayFor(model => model.ProfilePicture)
+                </dd>
+                <dt>
+
+                    @Html.DisplayNameFor(model => model.ProfilePicture)
+                </dt>
+            </dl>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header gradient-primary text-white">
+                    <h2 class="h6 text-uppercase mb-0">Profile Information</h2>
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.UserIdentity)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.UserIdentity)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.FullName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.FullName)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Address)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Address)
+                            </dd>
+
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
