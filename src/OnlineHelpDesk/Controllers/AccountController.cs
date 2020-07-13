@@ -179,7 +179,6 @@ namespace OnlineHelpDesk.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = model.UserIdentityCode,
-                    UserIdentityCode = model.UserIdentityCode,
                     Email = model.Email,
                     FullName = model.FullName,
                     CreatedAt = DateTime.Now

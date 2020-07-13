@@ -4,16 +4,19 @@ using OnlineHelpDesk.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace OnlineHelpDesk.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationUserManager _userManager;
-
+        private ApplicationSignInManager _signInManager;
 
         public ApplicationUserManager UserManager
         {
@@ -26,8 +29,21 @@ namespace OnlineHelpDesk.Controllers
                 _userManager = value;
             }
         }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
         // GET: User
-        public ActionResult Index(string user)
+        public async Task<ActionResult> Index(string user)
         {
             ApplicationUser appUser;
             if (string.IsNullOrEmpty(user) || user == "me")
@@ -37,24 +53,11 @@ namespace OnlineHelpDesk.Controllers
                     return RedirectToAction("Login", "Account", new { returnUrl = "/me" });
                 }
 
-                string userName = User.Identity.Name;
-                appUser = UserManager.FindByName(userName);
-
-                var profileUser = new ProfileViewModel()
-                {
-                    Email = appUser.Email,
-                    FullName = appUser.FullName,
-                    UserIdentity = appUser.UserIdentityCode,
-                    Role = appUser.Roles.FirstOrDefault().ToString(),
-                    Address = appUser.Address ?? "",
-                    ProfilePicture = appUser.Avatar ?? ""
-                };
-
-                return View(profileUser);
+                return RedirectToRoute("Profile", new { user = User.Identity.GetUserName() });
             }
-            else if (!User.IsInRole("SuperAdmin") && user != "admin")
+            else
             {
-                appUser = UserManager.FindByName(user);
+                appUser = await UserManager.FindByNameAsync(user);
                 if (appUser == null)
                 {
                     return HttpNotFound();
@@ -69,89 +72,42 @@ namespace OnlineHelpDesk.Controllers
                     Address = appUser.Address ?? "",
                     ProfilePicture = appUser.Avatar ?? ""
                 };
-                return View(appUser);
+                return View(profileUser);
             }
 
             return HttpNotFound();
         }
 
-        // GET: User
-        public ActionResult List()
-        {
-            var users = db.Users.ToList();
-            return View(users);
-        }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
+        //
+        // GET: /Manage/ChangePassword
+        public ActionResult ChangePassword()
         {
             return View();
         }
 
-        // GET: User/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: User/Create
+        //
+        // POST: /Manage/ChangePassword
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                return View(model);
             }
-            catch
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
             {
-                return View();
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("Index", new { Message = "ChangePasswordSuccess" });
             }
-        }
-
-        // GET: User/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: User/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: User/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: User/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            //AddErrors(result);
+            return View(model);
         }
     }
 }
