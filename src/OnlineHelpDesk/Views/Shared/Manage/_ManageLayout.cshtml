@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Notification = null;
+    ViewBag.Title = "Manage";
+    ViewBag.Role = "SuperAdmin";
+    ViewBag.Home = "active";
+    ViewBag.Avatar = "../Content/AppImages/useraccount.png";
+    Layout = "../_Layout.cshtml";
+}
+@section stylesheets {
+    @RenderSection("stylesheets", required: false)
+}
+@section sidebarSection {
+    @Html.Partial("_SidebarHomePartial")
+}
+
+@RenderBody()
+@section scripts {
+    @RenderSection("scripts", required: false)
+}

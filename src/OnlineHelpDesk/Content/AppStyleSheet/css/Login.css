@@ -1,5 +1,6 @@
 ﻿body {
     background: #feffff;
+    font-size: 14px;
 }
 
 .head-login {
@@ -8,13 +9,13 @@
 
 .title-head-login {
     padding: 10px 5px 20px 5px;
-    font-size: 4.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #2b8a44;
 }
 
 .main-login {
-    font-size: 1.5rem;
+    font-size: 1rem;
 }
 
 .main-login .guide-main-login .ul-guide-main-login {
@@ -44,7 +45,7 @@
 
 .main-login .content-main-login form .btn-login {
     padding: 5px 35px;
-    font-size: 1.75rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
     font-weight: 600;
     margin: auto;
@@ -71,7 +72,7 @@
 .check:before {
     content: "";
     position: absolute;
-    top: -15px;
+    top: -10px;
     left: -15px;
     width: 48px;
     height: 48px;
