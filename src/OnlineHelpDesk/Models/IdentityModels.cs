@@ -14,7 +14,11 @@ namespace OnlineHelpDesk.Models
     public class ApplicationUser : IdentityUser
     {
         [StringLength(32)]
-        public string UserIdentityCode { get; set; }
+        public virtual string UserIdentityCode
+        {
+            get { return UserName; }
+            set { UserName = value; }
+        }
 
         [Required]
         [StringLength(255)]
