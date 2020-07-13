@@ -25,7 +25,8 @@ namespace OnlineHelpDesk.Controllers
             Dictionary<string, Notification> dictNotifications = new Dictionary<string, Notification>();
             foreach (var notification in notifications)
             {
-                dictNotifications.Add(notification.Id.ToString(), notification);
+                if (notification.Seen == false)
+                    dictNotifications.Add(notification.Id.ToString(), notification);
             }
             return Json(dictNotifications, JsonRequestBehavior.AllowGet);
         }

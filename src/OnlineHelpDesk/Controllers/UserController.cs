@@ -29,7 +29,6 @@ namespace OnlineHelpDesk.Controllers
                 _userManager = value;
             }
         }
-
         public ApplicationSignInManager SignInManager
         {
             get
@@ -74,8 +73,6 @@ namespace OnlineHelpDesk.Controllers
                 };
                 return View(profileUser);
             }
-
-            return HttpNotFound();
         }
 
 
