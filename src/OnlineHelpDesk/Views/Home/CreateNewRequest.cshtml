@@ -15,7 +15,7 @@
         <div class="col-lg-12 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="h6 text-uppercase mb-0">New Request Form</h3>
+                    <h3 class="h3 text-uppercase mb-0">New Request Form</h3>
                 </div>
                 <div class="card-body">
                     @using (Html.BeginForm("CreateNewRequest", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -54,14 +54,14 @@
                                 <select data-val="true" required="required" data-val-required="Equipment field is required." id="EquipmentId" name="EquipmentId" class="form-control">
                                     
                                 </select>
-                                @Html.ValidationMessageFor(m => newRequest.EquipmentId, "", new { @class = "text-danger" })
+                                <span class="field-validation-valid text-danger" data-valmsg-for="EquipmentId" data-valmsg-replace="true"></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 form-control-label">Message</label>
                             <div class="col-sm-9">
                                 <textarea name="Message" id="Message" type="text" class="form-control" rows="5"> </textarea>
-                                @Html.ValidationMessageFor(m => newRequest.Message, "", new { @class = "text-danger" })
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Message" data-valmsg-replace="true"></span>
                             </div>
                         </div>
                         <div class="form-group row text-right">

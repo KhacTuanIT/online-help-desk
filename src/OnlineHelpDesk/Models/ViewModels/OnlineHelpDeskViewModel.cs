@@ -44,15 +44,7 @@ namespace OnlineHelpDesk.Models
         public string RequestType { get; set; }
         public string RequestMessage { get; set; }
         public DateTime? CreatedTime { get; set; }
-    }
-
-    public enum RequestTypeEnum
-    {
-        Default,
-        QA,
-        Report,
-        Add
-    }
+    }   
 
     public enum StatusTypeEnum
     {

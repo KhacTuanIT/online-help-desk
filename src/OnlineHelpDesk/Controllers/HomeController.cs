@@ -4,6 +4,7 @@ using OnlineHelpDesk.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,16 +17,13 @@ namespace OnlineHelpDesk.Controllers
         ApplicationDbContext context = new ApplicationDbContext();
         public ActionResult Index()
         {
-            var userId = User.Identity.GetUserId();
-            List<Notification> notifications = (from n in context.Notifications
-                                                where n.UserId == userId
-                                                select n).ToList();
+            //if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
             int requestCount = context.Requests.Count();
             int userCount = context.Users.Count();
             int facilityCount = context.Facilities.Count();
             int equipmentCount = context.Equipments.Count();
             return View(new HomeViewModel() { 
-                Notifications = notifications, 
+                Notifications = GetNotifications(), 
                 RequestViewModels = null,
                 Requests = requestCount,
                 Users = userCount,
@@ -36,24 +34,21 @@ namespace OnlineHelpDesk.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
 
             return View();
         }
 
         public ActionResult ListRequest()
         {
-            string userId = User.Identity.GetUserId();
-            List <Notification> notifications = (from n in context.Notifications
-                                                where n.UserId == userId
-                                                select n).ToList();
+            if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
             var requestRecords = from r in context.Requests
                                 join e in context.Equipments on r.EquipmentId equals e.Id into tb1
                                 from e in tb1.ToList()
@@ -77,11 +72,12 @@ namespace OnlineHelpDesk.Controllers
 
             List<RequestViewModel> requestViewModels = requestRecords.ToList();
 
-            return View(new HomeViewModel() { Notifications = notifications, RequestViewModels = requestViewModels });
+            return View(new HomeViewModel() { Notifications = GetNotifications(), RequestViewModels = requestViewModels });
         }
 
         public ActionResult CreateNewRequest()
         {
+            if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
             return View(new CreateNewRequestViewModel { Facilities = GetFacilities() });
         }
 
@@ -90,53 +86,65 @@ namespace OnlineHelpDesk.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(new CreateNewRequestViewModel { Facilities = GetFacilities(), NewRequestViewModel = model });
+                if (model.EquipmentId == 0)
+                    TempData["Message"] = "Missing equipment field";
+                return RedirectToAction("CreateNewRequest");
             }
 
-            //using (var transaction = context.Database.BeginTransaction())
-            //{
-            //    try
-            //    {
-            //        string userId = User.Identity.GetUserId();
-            //        Request request = new Request()
-            //        {
-            //            PetitionerId = userId,
-            //            EquipmentId = model.EquipmentId,
-            //            Message = model.Message,
-            //            RequestTypeId = 3
-            //        };
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
+                    var createdTime = DateTime.Now;
+                    RequestStatus requestStatus = new RequestStatus()
+                    {
+                        StatusTypeId = statusTypeId,
+                        TimeCreated = createdTime,
+                        Message = "Created Request"
+                    };
 
-            //        context.Requests.Add(request);
-            //        context.SaveChanges();
+                    context.RequestStatus.Add(requestStatus);
+                    context.SaveChanges();
 
-            //        int requestId = request.Id;
-            //        RequestStatus requestStatus = new RequestStatus()
-            //        {
-            //            RequestId = requestId,
-            //            StatusTypeId = 1,
-            //            TimeCreated = DateTime.Now
-            //        };
+                    var requestStatusId = requestStatus.Id;
+                    var userId = User.Identity.GetUserId();
+                    Request request = new Request()
+                    {
+                        PetitionerId = userId,
+                        EquipmentId = model.EquipmentId,
+                        Message = model.Message,
+                        RequestStatusId = requestStatusId,
+                        RequestTypeId = 3
+                    };
+                    context.Requests.Add(request);
 
-            //        context.RequestStatus.Add(requestStatus);
-            //        context.SaveChanges();
-            //        int requestStatusId = requestStatus.Id;
-
-            //        request.RequestStatusId = requestStatusId;
-
-            //        context.Entry(request).State = EntityState.Modified;
-            //        context.SaveChanges();
-
-            //        ViewBag.Message = "Create Request successfully!";
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        ViewBag.Message = e.Message;
-            //        transaction.Rollback();
-            //        return View(new CreateNewRequestViewModel { Facilities = GetFacilities(), NewRequestViewModel = model });
-            //    }
-            //}
-
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            TempData["Message"] += validationError.ErrorMessage + "<br>";
+                        }
+                    }
+                    transaction.Rollback();
+                    return View(new CreateNewRequestViewModel { Facilities = GetFacilities(), NewRequestViewModel = model });
+                }
+            }
+            TempData["Message"] = "Create Request successfully!";
             return RedirectToAction("Index");
+        }
+
+        public List<Notification> GetNotifications()
+        {
+            string userId = User.Identity.GetUserId();
+            return (from n in context.Notifications
+                    where n.UserId == userId
+                    select n).ToList();
         }
 
         public List<Facility> GetFacilities()

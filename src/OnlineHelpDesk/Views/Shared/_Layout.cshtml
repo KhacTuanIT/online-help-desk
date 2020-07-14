@@ -49,6 +49,10 @@
     @Scripts.Render("~/bundles/notification")
     @RenderSection("scripts", required: false)
     
+    @if (TempData["Message"] != null)
+    {
+        ViewBag.Message = TempData["Message"];
+    }
     @if (ViewBag.Message != null)
     {
         @Scripts.Render("~/bundles/toast-custom")
