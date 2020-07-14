@@ -48,5 +48,13 @@
     @Scripts.Render("~/bundles/javascript")
     @Scripts.Render("~/bundles/notification")
     @RenderSection("scripts", required: false)
+    
+    @if (ViewBag.Message != null)
+    {
+        @Scripts.Render("~/bundles/toast-custom")
+        <script>
+            toastShow("@ViewBag.Message");
+        </script>
+    }
 </body>
 </html>

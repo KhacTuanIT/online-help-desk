@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -21,8 +22,15 @@ namespace OnlineHelpDesk.Models
         public int Equipments { get; set; }
     }
 
+    public class CreateNewRequestViewModel
+    {
+        public List<Facility> Facilities { get; set; }
+        public NewRequestViewModel NewRequestViewModel { get; set; }
+    }
+
     public class NewRequestViewModel
     {
+        [Required(ErrorMessage = "Equipment field is required.")]
         public int EquipmentId { get; set; }
         public string Message { get; set; }
     }
@@ -36,5 +44,23 @@ namespace OnlineHelpDesk.Models
         public string RequestType { get; set; }
         public string RequestMessage { get; set; }
         public DateTime? CreatedTime { get; set; }
+    }
+
+    public enum RequestTypeEnum
+    {
+        Default,
+        QA,
+        Report,
+        Add
+    }
+
+    public enum StatusTypeEnum
+    {
+        Default,
+        Created,
+        Assigned,
+        Processing,
+        Completed,
+        Closed
     }
 }

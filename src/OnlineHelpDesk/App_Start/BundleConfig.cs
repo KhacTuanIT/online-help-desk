@@ -34,13 +34,15 @@ namespace OnlineHelpDesk
 
             bundles.Add(new StyleBundle("~/Content/stylesheet").Include(
                       "~/Content/AppStyleSheet/bootstrap/bootstrap.min.css",
-                      "~/Content/AppStyleSheet/css/orionicons.css"));
+                      "~/Content/AppStyleSheet/css/orionicons.css",
+                      "~/Content/AppStyleSheet/css/toastr.css"));
             bundles.Add(new ScriptBundle("~/bundles/javascript").Include(
                       "~/Scripts/AppJavaScript/jquery/jquery.min.js",
                       "~/Scripts/AppJavaScript/popper/umd/popper.min.js",
                       "~/Scripts/AppJavaScript/bootstrap/bootstrap.min.js",
                       "~/Scripts/AppJavaScript/jquery.cookie/jquery.cookie.js",
-                      "~/Scripts/AppJavaScript/js/front.js"));
+                      "~/Scripts/AppJavaScript/js/front.js",
+                      "~/Scripts/AppJavaScript/js/toastr.js"));
             bundles.Add(new ScriptBundle("~/bundles/chart").Include(
                       "~/Scripts/AppJavaScript/chart/Chart.min.js",
                       "~/Scripts/AppJavaScript/js/charts-home.js"));
@@ -48,6 +50,10 @@ namespace OnlineHelpDesk
                       "~/Content/AppStyleSheet/css/modal.css"));
             bundles.Add(new ScriptBundle("~/bundles/notification").Include(
                       "~/Scripts/AppJavaScript/js/notification-custom.js"));
+            bundles.Add(new ScriptBundle("~/bundles/newrequest").Include(
+                      "~/Scripts/AppJavaScript/js/create-new-request.js"));
+            bundles.Add(new ScriptBundle("~/bundles/toast-custom").Include(
+                      "~/Scripts/AppJavaScript/js/toastr-custom.js"));
         }
     }
 }
