@@ -236,6 +236,8 @@
     <Content Include="Content\AppStyleSheet\css\style.red.css" />
     <Content Include="Content\AppStyleSheet\css\style.sea.css" />
     <Content Include="Content\AppStyleSheet\css\style.violet.css" />
+    <Content Include="Content\AppStyleSheet\css\toast.css" />
+    <Content Include="Content\AppStyleSheet\css\toastr.css" />
     <Content Include="Content\AppStyleSheet\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\AppStyleSheet\fonts\iconfont.css" />
     <Content Include="Content\AppStyleSheet\fonts\orion-font.svg" />
@@ -392,8 +394,12 @@
     <Content Include="Scripts\AppJavaScript\jquery\jquery.slim.min.js" />
     <Content Include="Scripts\AppJavaScript\js\charts-custom.js" />
     <Content Include="Scripts\AppJavaScript\js\charts-home.js" />
+    <Content Include="Scripts\AppJavaScript\js\create-new-request.js" />
     <Content Include="Scripts\AppJavaScript\js\front.js" />
     <Content Include="Scripts\AppJavaScript\js\notification-custom.js" />
+    <Content Include="Scripts\AppJavaScript\js\toast.js" />
+    <Content Include="Scripts\AppJavaScript\js\toastr-custom.js" />
+    <Content Include="Scripts\AppJavaScript\js\toastr.js" />
     <Content Include="Scripts\AppJavaScript\popper\esm\popper-utils.js" />
     <Content Include="Scripts\AppJavaScript\popper\esm\popper-utils.min.js" />
     <Content Include="Scripts\AppJavaScript\popper\esm\popper.js" />

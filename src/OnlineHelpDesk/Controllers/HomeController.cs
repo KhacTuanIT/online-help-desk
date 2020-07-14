@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using OnlineHelpDesk.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -81,16 +82,88 @@ namespace OnlineHelpDesk.Controllers
 
         public ActionResult CreateNewRequest()
         {
-            var userId = User.Identity.GetUserId();
-            List<Notification> notifications = (from n in context.Notifications
-                                                where n.UserId == userId
-                                                select n).ToList();
-            return View(new HomeViewModel() { Notifications = notifications, RequestViewModels = null });
+            return View(new CreateNewRequestViewModel { Facilities = GetFacilities() });
         }
 
+        [HttpPost]
         public ActionResult CreateNewRequest(NewRequestViewModel model)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(new CreateNewRequestViewModel { Facilities = GetFacilities(), NewRequestViewModel = model });
+            }
+
+            //using (var transaction = context.Database.BeginTransaction())
+            //{
+            //    try
+            //    {
+            //        string userId = User.Identity.GetUserId();
+            //        Request request = new Request()
+            //        {
+            //            PetitionerId = userId,
+            //            EquipmentId = model.EquipmentId,
+            //            Message = model.Message,
+            //            RequestTypeId = 3
+            //        };
+
+            //        context.Requests.Add(request);
+            //        context.SaveChanges();
+
+            //        int requestId = request.Id;
+            //        RequestStatus requestStatus = new RequestStatus()
+            //        {
+            //            RequestId = requestId,
+            //            StatusTypeId = 1,
+            //            TimeCreated = DateTime.Now
+            //        };
+
+            //        context.RequestStatus.Add(requestStatus);
+            //        context.SaveChanges();
+            //        int requestStatusId = requestStatus.Id;
+
+            //        request.RequestStatusId = requestStatusId;
+
+            //        context.Entry(request).State = EntityState.Modified;
+            //        context.SaveChanges();
+
+            //        ViewBag.Message = "Create Request successfully!";
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        ViewBag.Message = e.Message;
+            //        transaction.Rollback();
+            //        return View(new CreateNewRequestViewModel { Facilities = GetFacilities(), NewRequestViewModel = model });
+            //    }
+            //}
+
+            return RedirectToAction("Index");
+        }
+
+        public List<Facility> GetFacilities()
+        {
+            return (from f in context.Facilities
+                    select f).ToList();
+        }
+
+        public ActionResult GetEquipment(int id)
+        {
+            var equipmentTypes = (from et in context.EquipmentTypes
+                                  select et).ToList();
+            Dictionary<string, string> dictEquipmentType = new Dictionary<string, string>();
+            foreach (var et in equipmentTypes)
+            {
+                dictEquipmentType.Add(et.Id.ToString(), et.TypeName);
+            }
+            var equipts = (from e in context.Equipments
+                           where e.FacilityId == id
+                           select e).ToList();
+
+            Dictionary<string, string> dictEquipment = new Dictionary<string, string>();
+            foreach (var e in equipts)
+            {
+                dictEquipment.Add(e.Id.ToString(), dictEquipmentType[e.ArtifactId.ToString()]);
+            }
+            return Json(dictEquipment, JsonRequestBehavior.AllowGet);
         }
     }
 }
