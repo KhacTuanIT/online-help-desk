@@ -1,0 +1,8 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@ViewBag.Message
+
+@Html.ActionLink("Import students", "Import", "Admin", new { importFor = "Students" })
+@Html.ActionLink("Import Facility-Heads", "Import", "Admin", new { importFor = "Facility-Heads" })

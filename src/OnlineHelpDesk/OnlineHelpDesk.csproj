@@ -44,10 +44,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=5.2.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.5.2.0\lib\net45\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -196,6 +204,10 @@
     <Compile Include="Migrations\202007140949069_remove-requestid.Designer.cs">
       <DependentUpon>202007140949069_remove-requestid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007141809041_Contact.cs" />
+    <Compile Include="Migrations\202007141809041_Contact.Designer.cs">
+      <DependentUpon>202007141809041_Contact.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\DatabaseHelper.cs" />
@@ -204,6 +216,7 @@
     <Compile Include="Models\Facility.cs" />
     <Compile Include="Models\FacilityHead.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ViewModels\AdminViewModels.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\ViewModels\OnlineHelpDeskViewModel.cs" />
@@ -455,7 +468,6 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
@@ -470,7 +482,6 @@
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Home\ListRequest.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\Home\CreateNewRequest.cshtml" />
     <Content Include="Views\Shared\Manage\_ManageLayout.cshtml" />
     <Content Include="Views\Shared\User\_UserLayout.cshtml" />
@@ -483,6 +494,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Uploaded\" />
     <Folder Include="Views\Notification\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\Todo\" />
@@ -511,6 +523,9 @@
     <Content Include="Views\Shared\Home\_NotificationDetail.cshtml" />
     <Content Include="Views\Shared\Roles\_RolesLayout.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\Admin\ImportStudents.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202007121941467_initialize.resx">
@@ -518,6 +533,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007140949069_remove-requestid.resx">
       <DependentUpon>202007140949069_remove-requestid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007141809041_Contact.resx">
+      <DependentUpon>202007141809041_Contact.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
