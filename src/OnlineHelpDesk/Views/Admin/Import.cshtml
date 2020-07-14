@@ -1,0 +1,36 @@
+﻿@model OnlineHelpDesk.Models.ImportDataiewModel
+@{
+    ViewBag.Title = "Import " + ViewBag.ImportFor;
+}
+
+@using (Html.BeginForm("UploadExcel", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <label for="file-upload" class="btn-upload">
+        <i class="fa fa-upload"></i> Select *.csv file
+        @Html.TextBoxFor(m => m.File, new { type = "file", id = "file-upload", onchange = "selectedFileChange(this);" })
+    </label>
+    <span id="filename"></span>
+    @Html.ValidationMessageFor(m => m.File)
+
+    <br />
+
+    <input id="btn-upload" type="submit" name="submit" value="Upload" class="d-none" />
+}
+
+<script>
+    function selectedFileChange(myFile) {
+        var filename = myFile.files[0].name;
+        var btnUpload = document.getElementById('btn-upload');
+        var spanMessage = document.getElementById('filename');
+        var inputUpload = document.getElementById('file-upload');
+
+        if (filename.slice(-5).indexOf(".xls") > -1) {
+            btnUpload.classList.remove("d-none");
+            spanMessage.innerHTML = myFile.files[0].name;
+        } else {
+            inputUpload.value = null;
+            spanMessage.innerHTML = "NOT a EXCELL file!";
+        }
+
+    }
+</script>

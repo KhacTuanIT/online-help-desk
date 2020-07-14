@@ -24,7 +24,7 @@ namespace OnlineHelpDesk.Models
         [StringLength(255)]
         public string FullName { get; set; }
 
-        public string Address { get; set; }
+        public string Contact { get; set; }
 
         [DataType(DataType.ImageUrl)]
         public string Avatar { get; set; }

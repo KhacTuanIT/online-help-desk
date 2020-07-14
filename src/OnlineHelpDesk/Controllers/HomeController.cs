@@ -75,6 +75,7 @@ namespace OnlineHelpDesk.Controllers
             return View(new HomeViewModel() { Notifications = GetNotifications(), RequestViewModels = requestViewModels });
         }
 
+        [HttpGet]
         public ActionResult CreateNewRequest()
         {
             if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];

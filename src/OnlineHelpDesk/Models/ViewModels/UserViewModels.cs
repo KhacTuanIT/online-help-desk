@@ -30,7 +30,7 @@ namespace OnlineHelpDesk.Models
         [DataType(DataType.ImageUrl)]
         public string ProfilePicture { get; set; }
 
-        [Display(Name = "Address")]
-        public string Address { get; set; }
+        [Display(Name = "Contact")]
+        public string Contact { get; set; }
     }
 }

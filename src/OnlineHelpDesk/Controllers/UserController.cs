@@ -68,7 +68,7 @@ namespace OnlineHelpDesk.Controllers
                     FullName = appUser.FullName,
                     UserIdentity = appUser.UserIdentityCode,
                     Role = appUser.Roles.FirstOrDefault().ToString(),
-                    Address = appUser.Address ?? "",
+                    Contact = appUser.Contact ?? "",
                     ProfilePicture = appUser.Avatar ?? ""
                 };
                 return View(profileUser);
