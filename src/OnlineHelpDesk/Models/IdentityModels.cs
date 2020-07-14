@@ -112,11 +112,6 @@ namespace OnlineHelpDesk.Models
                 .WithOptional(e => e.Facility)
                 .HasForeignKey(e => e.FacilityId);
 
-            modelBuilder.Entity<Request>()
-                .HasMany(e => e.RequestStatus)
-                .WithOptional(e => e.Request)
-                .HasForeignKey(e => e.RequestId);
-
             modelBuilder.Entity<RequestType>()
                 .HasMany(e => e.Requests)
                 .WithOptional(e => e.RequestType)

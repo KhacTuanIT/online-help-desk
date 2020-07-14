@@ -192,6 +192,10 @@
     <Compile Include="Migrations\202007121941467_initialize.Designer.cs">
       <DependentUpon>202007121941467_initialize.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007140949069_remove-requestid.cs" />
+    <Compile Include="Migrations\202007140949069_remove-requestid.Designer.cs">
+      <DependentUpon>202007140949069_remove-requestid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\DatabaseHelper.cs" />
@@ -511,6 +515,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202007121941467_initialize.resx">
       <DependentUpon>202007121941467_initialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007140949069_remove-requestid.resx">
+      <DependentUpon>202007140949069_remove-requestid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
