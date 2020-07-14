@@ -13,9 +13,11 @@ namespace OnlineHelpDesk
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("Manage/{*pathInfo}");
             //routes.IgnoreRoute("Account/{*pathInfo}");
             //routes.Ignore("Home/{*pathInfo}");
             //routes.Ignore("{controller}/Index");
+
 
             routes.MapRoute(
                 name: "Login",

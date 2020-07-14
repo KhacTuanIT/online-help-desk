@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace OnlineHelpDesk.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class AdminController : Controller
     {
         // GET: Admin
@@ -13,7 +14,6 @@ namespace OnlineHelpDesk.Controllers
         {
             return View();
         }
-
 
         // IMPORT DATA FROM EXCEL
         // MANUAL GENERATE REPORT

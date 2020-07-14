@@ -79,6 +79,7 @@ namespace OnlineHelpDesk.Controllers
             return View(new HomeViewModel() { Notifications = notifications, RequestViewModels = requestViewModels });
         }
 
+        [HttpGet]
         public ActionResult CreateNewRequest()
         {
             var userId = User.Identity.GetUserId();
@@ -88,6 +89,7 @@ namespace OnlineHelpDesk.Controllers
             return View(new HomeViewModel() { Notifications = notifications, RequestViewModels = null });
         }
 
+        [HttpPost]
         public ActionResult CreateNewRequest(NewRequestViewModel model)
         {
             return View();
