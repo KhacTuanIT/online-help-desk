@@ -143,5 +143,6 @@ namespace OnlineHelpDesk.Models
                 .HasForeignKey(e => e.PetitionerId);
         }
 
+        public System.Data.Entity.DbSet<OnlineHelpDesk.Models.ProfileViewModel> ProfileViewModels { get; set; }
     }
 }

@@ -1,19 +1,24 @@
-﻿@model OnlineHelpDesk.Models.ImportDataiewModel
+﻿@model OnlineHelpDesk.Models.ImportDataViewModel
 @{
     ViewBag.Title = "Import " + ViewBag.ImportFor;
+}
+
+@if (ViewBag.Message != null)
+{
+    @ViewBag.Message
 }
 
 @using (Html.BeginForm("UploadExcel", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <label for="file-upload" class="btn-upload">
-        <i class="fa fa-upload"></i> Select *.csv file
+        <i class="fa fa-upload"></i> Select *.xls/*/xlsx file
         @Html.TextBoxFor(m => m.File, new { type = "file", id = "file-upload", onchange = "selectedFileChange(this);" })
     </label>
     <span id="filename"></span>
     @Html.ValidationMessageFor(m => m.File)
 
     <br />
-
+    <input type="hidden" name="importFor" value="@ViewBag.ImportFor" />
     <input id="btn-upload" type="submit" name="submit" value="Upload" class="d-none" />
 }
 

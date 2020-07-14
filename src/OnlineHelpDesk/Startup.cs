@@ -16,8 +16,6 @@ namespace OnlineHelpDesk
 
             // Initialize default roles and admin
             DatabaseHelper.InitializeRequiredData();
-
-            DatabaseHelper.SeedData();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace OnlineHelpDesk.Models
 {
     public class ProfileViewModel
     {
+        [Key]
         [Required]
         [Display(Name = "User Identity")]
         public string UserIdentity { get; set; }
