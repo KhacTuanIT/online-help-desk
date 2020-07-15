@@ -54,30 +54,32 @@ namespace OnlineHelpDesk.Controllers
             List <Notification> notifications = (from n in context.Notifications
                                                 where n.UserId == userId
                                                 select n).ToList();
-            var requestRecords = from r in context.Requests
-                                join e in context.Equipments on r.EquipmentId equals e.Id into tb1
-                                from e in tb1.ToList()
-                                join f in context.Facilities on e.FacilityId equals f.Id
-                                join et in context.EquipmentTypes on e.ArtifactId equals et.Id
-                                join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
-                                from rs in tb2.ToList()
-                                join st in context.StatusTypes on rs.StatusTypeId equals st.Id
-                                join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
-                                join u in context.Users on r.PetitionerId equals u.Id
-                                select new RequestViewModel
-                                {
-                                    Id = r.Id,
-                                    Petitioner = u.UserName,
-                                    Equipment = et.TypeName,
-                                    Facility = f.Name,
-                                    RequestType = rt.TypeName,
-                                    RequestMessage = r.Message,
-                                    CreatedTime = rs.TimeCreated
-                                };
+            //var requestRecords = from r in context.Requests
+            //                    join e in context.Equipments on r.EquipmentId equals e.Id into tb1
+            //                    from e in tb1.ToList()
+            //                    join f in context.Facilities on e.FacilityId equals f.Id
+            //                    join et in context.EquipmentTypes on e.ArtifactId equals et.Id
+            //                    join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+            //                    from rs in tb2.ToList()
+            //                    join st in context.StatusTypes on rs.StatusTypeId equals st.Id
+            //                    join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
+            //                    join u in context.Users on r.PetitionerId equals u.Id
+            //                    select new RequestViewModel
+            //                    {
+            //                        Id = r.Id,
+            //                        Petitioner = u.UserName,
+            //                        Equipment = et.TypeName,
+            //                        Facility = f.Name,
+            //                        RequestType = rt.TypeName,
+            //                        RequestMessage = r.Message,
+            //                        CreatedTime = rs.TimeCreated
+            //                    };
 
-            List<RequestViewModel> requestViewModels = requestRecords.ToList();
+            //List<RequestViewModel> requestViewModels = requestRecords.ToList();
 
-            return View(new HomeViewModel() { Notifications = notifications, RequestViewModels = requestViewModels });
+            //return View(new HomeViewModel() { Notifications = notifications, RequestViewModels = requestViewModels });
+
+            return View();
         }
 
         [HttpGet]

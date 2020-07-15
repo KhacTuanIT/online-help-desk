@@ -46,6 +46,7 @@ namespace OnlineHelpDesk.Controllers
         // IMPORT DATA FROM EXCEL
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> UploadExcel(ImportDataViewModel model, string role = "Student")
         {
             if (ModelState.IsValid)

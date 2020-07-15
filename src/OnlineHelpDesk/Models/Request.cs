@@ -30,9 +30,6 @@ namespace OnlineHelpDesk.Models
         [ForeignKey("RequestType")]
         public int? RequestTypeId { get; set; }
 
-        [ForeignKey("RequestStatus")]
-        public int RequestStatusId { get; set; }
-
         [Required]
         [DataType(DataType.Text)]
         public string Message { get; set; }
