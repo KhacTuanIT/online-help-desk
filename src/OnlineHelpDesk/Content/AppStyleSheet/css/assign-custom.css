@@ -1,0 +1,24 @@
+﻿.Assigned {
+    text-transform: uppercase;
+    color: darkgrey;
+}
+.Created {
+    text-transform: uppercase;
+    color: yellow;
+}
+.Processing {
+    text-transform: uppercase;
+    color: aqua;
+}
+.Done {
+    text-transform: uppercase;
+    color: forestgreen;
+}
+.Closed {
+    text-transform: uppercase;
+    color: darkred;
+}
+.Reply {
+    text-transform: uppercase;
+    color: gray;
+}

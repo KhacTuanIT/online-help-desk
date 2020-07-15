@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OnlineHelpDesk.Models;
 using System;
@@ -49,28 +50,57 @@ namespace OnlineHelpDesk.Controllers
         public ActionResult ListRequest()
         {
             if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
-            var requestRecords = from r in context.Requests
-                                join e in context.Equipments on r.EquipmentId equals e.Id into tb1
-                                from e in tb1.ToList()
-                                join f in context.Facilities on e.FacilityId equals f.Id
-                                join et in context.EquipmentTypes on e.ArtifactId equals et.Id
-                                join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
-                                from rs in tb2.ToList()
-                                join st in context.StatusTypes on rs.StatusTypeId equals st.Id
-                                join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
-                                join u in context.Users on r.PetitionerId equals u.Id
-                                select new RequestViewModel
-                                {
-                                    Id = r.Id,
-                                    Petitioner = u.UserName,
-                                    Equipment = et.TypeName,
-                                    Facility = f.Name,
-                                    RequestType = rt.TypeName,
-                                    RequestMessage = r.Message,
-                                    CreatedTime = rs.TimeCreated
-                                };
-
-            List<RequestViewModel> requestViewModels = requestRecords.ToList();
+            List<RequestViewModel> requestViewModels = new List<RequestViewModel>();
+            if (User.IsInRole("FacilityHead") || User.IsInRole("SuperAdmin"))
+            {
+                requestViewModels = (from r in context.Requests
+                                     join e in context.Equipments on r.EquipmentId equals e.Id into tb1
+                                     from e in tb1.ToList()
+                                     join f in context.Facilities on e.FacilityId equals f.Id
+                                     join et in context.EquipmentTypes on e.ArtifactId equals et.Id
+                                     join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+                                     from rs in tb2.ToList()
+                                     join st in context.StatusTypes on rs.StatusTypeId equals st.Id
+                                     join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
+                                     join u in context.Users on r.PetitionerId equals u.Id
+                                     select new RequestViewModel
+                                     {
+                                         Id = r.Id,
+                                         Petitioner = u.UserName,
+                                         Equipment = et.TypeName,
+                                         Facility = f.Name,
+                                         RequestType = rt.TypeName,
+                                         RequestMessage = r.Message,
+                                         CreatedTime = rs.TimeCreated
+                                     }).ToList();
+            }
+            
+            if (User.IsInRole("Assignor"))
+            {
+                string userId = User.Identity.GetUserId();
+                int assignedHeadId = context.FacilityHeads.Where(f => f.UserId == userId).FirstOrDefault().Id;
+                requestViewModels = (from r in context.Requests
+                                     join e in context.Equipments on r.EquipmentId equals e.Id into tb1
+                                     from e in tb1.ToList()
+                                     join f in context.Facilities on e.FacilityId equals f.Id
+                                     join et in context.EquipmentTypes on e.ArtifactId equals et.Id
+                                     join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+                                     from rs in tb2.ToList()
+                                     join st in context.StatusTypes on rs.StatusTypeId equals st.Id
+                                     join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
+                                     join u in context.Users on r.PetitionerId equals u.Id
+                                     where r.AssignedHeadId == assignedHeadId
+                                     select new RequestViewModel
+                                     {
+                                         Id = r.Id,
+                                         Petitioner = u.UserName,
+                                         Equipment = et.TypeName,
+                                         Facility = f.Name,
+                                         RequestType = rt.TypeName,
+                                         RequestMessage = r.Message,
+                                         CreatedTime = rs.TimeCreated
+                                     }).ToList();
+            }
 
             return View(new HomeViewModel() { Notifications = GetNotifications(), RequestViewModels = requestViewModels });
         }
@@ -79,16 +109,29 @@ namespace OnlineHelpDesk.Controllers
         public ActionResult CreateNewRequest()
         {
             if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
-            return View(new CreateNewRequestViewModel { Facilities = GetFacilities() });
+            return View(new CreateNewRequestViewModel { Facilities = GetFacilities(), RequestTypes = GetRequestTypes() });
         }
 
         [HttpPost]
         public ActionResult CreateNewRequest(NewRequestViewModel model)
         {
+            if (model.EquipmentId == 0)
+            {
+                TempData["Message"] += "Missing equipment field";
+                return RedirectToAction("CreateNewRequest");
+            }
+            if (model.RequestTypeId == 0)
+            {
+                TempData["Message"] += "Missing Request type field";
+                return RedirectToAction("CreateNewRequest");
+            }
+                
             if (!ModelState.IsValid)
             {
                 if (model.EquipmentId == 0)
-                    TempData["Message"] = "Missing equipment field";
+                    TempData["Message"] += "Missing equipment field \n";
+                if (model.RequestTypeId == 0)
+                    TempData["Message"] += "Missing Request type field";
                 return RedirectToAction("CreateNewRequest");
             }
 
@@ -98,8 +141,23 @@ namespace OnlineHelpDesk.Controllers
                 {
                     var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
                     var createdTime = DateTime.Now;
+
+                    var userId = User.Identity.GetUserId();
+                    Request request = new Request()
+                    {
+                        PetitionerId = userId,
+                        EquipmentId = model.EquipmentId,
+                        Message = model.Message,
+                        RequestTypeId = model.RequestTypeId
+                    };
+                    context.Requests.Add(request);
+                    context.SaveChanges();
+
+
+                    var requestId = request.Id;
                     RequestStatus requestStatus = new RequestStatus()
                     {
+                        //RequestId = requestId,
                         StatusTypeId = statusTypeId,
                         TimeCreated = createdTime,
                         Message = "Created Request"
@@ -107,37 +165,448 @@ namespace OnlineHelpDesk.Controllers
 
                     context.RequestStatus.Add(requestStatus);
                     context.SaveChanges();
-
-                    var requestStatusId = requestStatus.Id;
-                    var userId = User.Identity.GetUserId();
-                    Request request = new Request()
+                    
+                    string petitioner = User.Identity.GetUserName();
+                    var facilityHeads = (from fh in context.FacilityHeads
+                                         select fh);
+                    var requestType = context.RequestTypes.Where(x => x.Id == model.RequestTypeId).FirstOrDefault().TypeName;
+                    foreach (var item in facilityHeads)
                     {
-                        PetitionerId = userId,
-                        EquipmentId = model.EquipmentId,
-                        Message = model.Message,
-                        RequestStatusId = requestStatusId,
-                        RequestTypeId = 3
-                    };
-                    context.Requests.Add(request);
-
+                        if (item.UserId != userId)
+                        {
+                            context.Notifications.Add(new Notification()
+                            {
+                                UserId = item.UserId,
+                                Message = petitioner + " has been created a " + requestType + " request",
+                                Seen = false,
+                                CreatedAt = createdTime
+                            });
+                        } 
+                    }
+                    context.Notifications.Add(new Notification()
+                    {
+                        UserId = userId,
+                        Message = petitioner + " has been created a " + requestType + " request",
+                        Seen = false,
+                        CreatedAt = createdTime
+                    });
                     context.SaveChanges();
                     transaction.Commit();
                 }
-                catch (DbEntityValidationException dbEx)
+                catch (DbEntityValidationException)
                 {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            TempData["Message"] += validationError.ErrorMessage + "<br>";
-                        }
-                    }
+                    TempData["Message"] += "Missing field";
                     transaction.Rollback();
-                    return View(new CreateNewRequestViewModel { Facilities = GetFacilities(), NewRequestViewModel = model });
+                    return RedirectToAction("CreateNewRequest");
                 }
             }
             TempData["Message"] = "Create Request successfully!";
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Reply(HandleViewModel model)
+        {
+            try
+            {
+                string userId = User.Identity.GetUserId();
+                string userName = User.Identity.GetUserName();
+                string statusMessage = "";
+                DateTime createdTime = DateTime.Now;
+                var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Reply").FirstOrDefault().Id;
+                if (model.StatusMessage == "" || model.StatusMessage == null)
+                {
+                    statusMessage = "Your request is reply";
+                }
+                else
+                {
+                    statusMessage = model.StatusMessage;
+                }
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        RequestStatus requestStatus = new RequestStatus()
+                        {
+                            //RequestId = model.RequestId,
+                            StatusTypeId = statusTypeId,
+                            Message = statusMessage,
+                            TimeCreated = createdTime
+                        };
+                        context.RequestStatus.Add(requestStatus);
+                        context.SaveChanges();
+
+                        var request = context.Requests.Where(x => x.Id == model.RequestId).FirstOrDefault();
+
+                        if (request.PetitionerId != null)
+                        {
+                            Notification notification = new Notification()
+                            {
+                                UserId = request.PetitionerId,
+                                Message = "Your request '" + request.Message + "' has been replied!",
+                                Seen = false,
+                                CreatedAt = createdTime
+                            };
+                            context.Notifications.Add(notification);
+                            context.SaveChanges();
+                        }
+                        if (request.AssignedHeadId != null)
+                        {
+                            var assginedHeadUserId = context.FacilityHeads.Where(x => x.Id == request.AssignedHeadId).FirstOrDefault().UserId;
+                            Notification notification = new Notification()
+                            {
+                                UserId = assginedHeadUserId,
+                                Message = "Your assigned request '" + request.Message + "' has been replied by " + userName + "!",
+                                Seen = false,
+                                CreatedAt = createdTime
+                            };
+                            context.Notifications.Add(notification);
+                            context.SaveChanges();
+                            if (assginedHeadUserId != userId)
+                            {
+                                notification = new Notification()
+                                {
+                                    UserId = assginedHeadUserId,
+                                    Message = "You was reply for request '" + request.Message + "!",
+                                    Seen = false,
+                                    CreatedAt = createdTime
+                                };
+                                context.Notifications.Add(notification);
+                                context.SaveChanges();
+                            }
+                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        TempData["Message"] = "Has an error when reply request!";
+                        return RedirectToAction("ListRequest");
+                    }
+                }
+                TempData["Message"] = "Reply for " + userName + "'s request successfully!";
+                return RedirectToAction("ListRequest");
+            }
+            catch (Exception)
+            {
+                TempData["Message"] = "Has an error when reply request!";
+                return RedirectToAction("ListRequest");
+            }
+            
+        }
+
+        [HttpPost]
+        public ActionResult Assign(AssignViewModel model)
+        {
+            string userId = User.Identity.GetUserId();
+            string userName = User.Identity.GetUserName();
+            string statusMessage = "";
+            DateTime createdTime = DateTime.Now;
+            var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Assigned").FirstOrDefault().Id; 
+            if (!ModelState.IsValid)
+            {
+                TempData["Message"] = "Missing field when assign";
+                return RedirectToAction("ListRequest");
+            }
+            if (model.StatusMessage == "" || model.StatusMessage == null)
+            {
+                statusMessage = "Your request is assigned";
+            }
+            else
+            {
+                statusMessage = model.StatusMessage;
+            }
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    Request request = context.Requests.Where(x => x.Id == model.RequestId).FirstOrDefault();
+                    request.AssignedHeadId = model.AssginedHeadId;
+                    context.Entry(request).State = EntityState.Modified;
+
+                    RequestStatus requestStatus = new RequestStatus()
+                    {
+                        //RequestId = request.Id,
+                        StatusTypeId = statusTypeId,
+                        Message = statusMessage,
+                        TimeCreated = createdTime
+                    };
+                    context.RequestStatus.Add(requestStatus);
+                    context.SaveChanges();
+
+                    if (request.PetitionerId != null)
+                    {
+                        Notification notification = new Notification()
+                        {
+                            UserId = request.PetitionerId,
+                            Message = "Your request '" + request.Message + "' has been assigned!",
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
+                    }
+                    if (request.AssignedHeadId != null)
+                    {
+                        var assginedHeadUserId = context.FacilityHeads.Where(x => x.Id == request.AssignedHeadId).FirstOrDefault().UserId;
+                        Notification notification = new Notification()
+                        {
+                            UserId = assginedHeadUserId,
+                            Message = "Your is assigned '" + request.Message + "' request!",
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
+                        if (assginedHeadUserId != userId)
+                        {
+                            notification = new Notification()
+                            {
+                                UserId = assginedHeadUserId,
+                                Message = "You was assigned for request '" + request.Message + "!",
+                                Seen = false,
+                                CreatedAt = createdTime
+                            };
+                            context.Notifications.Add(notification);
+                            context.SaveChanges();
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    TempData["Message"] = "Has an error when assign request!";
+                    return RedirectToAction("ListRequest");
+                }
+            }
+            TempData["Message"] = "Assign for " + userName + "'s request successfully!";
+            return RedirectToAction("ListRequest");
+        }
+
+        [HttpPost]
+        public ActionResult Refuse(HandleViewModel model)
+        {
+            string userId = User.Identity.GetUserId();
+            string userName = User.Identity.GetUserName();
+            string statusMessage = "";
+            DateTime createdTime = DateTime.Now;
+            var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Closed").FirstOrDefault().Id;
+            if (model.StatusMessage == "" || model.StatusMessage == null)
+            {
+                statusMessage = "Your request is refuse";
+            }
+            else
+            {
+                statusMessage = model.StatusMessage;
+            }
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    RequestStatus requestStatus = new RequestStatus()
+                    {
+                        //RequestId = model.RequestId,
+                        StatusTypeId = statusTypeId,
+                        Message = statusMessage,
+                        TimeCreated = createdTime
+                    };
+                    context.RequestStatus.Add(requestStatus);
+                    context.SaveChanges();
+
+                    var request = context.Requests.Where(x => x.Id == model.RequestId).FirstOrDefault();
+
+                    if (request.PetitionerId != null)
+                    {
+                        Notification notification = new Notification()
+                        {
+                            UserId = request.PetitionerId,
+                            Message = "Your request '" + request.Message + "' has been refuse!",
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
+                    }
+                    if (request.AssignedHeadId != null)
+                    {
+                        var assginedHeadUserId = context.FacilityHeads.Where(x => x.Id == request.AssignedHeadId).FirstOrDefault().UserId;
+                        Notification notification = new Notification()
+                        {
+                            UserId = assginedHeadUserId,
+                            Message = "You are refused a request '" + request.Message + "!",
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
+                        if (assginedHeadUserId != userId)
+                        {
+                            notification = new Notification()
+                            {
+                                UserId = assginedHeadUserId,
+                                Message = "'" + request.Message + " has been refuse by " + userName + "!",
+                                Seen = false,
+                                CreatedAt = createdTime
+                            };
+                            context.Notifications.Add(notification);
+                            context.SaveChanges();
+                        }
+                    }
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    TempData["Message"] = "Has an error when refuse request!";
+                    return RedirectToAction("ListRequest");
+                }
+            }
+            TempData["Message"] = "Reply for " + userName + "'s request successfully!";
+            return RedirectToAction("ListRequest");
+        }
+
+        [HttpPost]
+        public ActionResult Done(HandleViewModel model)
+        {
+            string userId = User.Identity.GetUserId();
+            string userName = User.Identity.GetUserName();
+            string statusMessage = "";
+            DateTime createdTime = DateTime.Now;
+            var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Completed").FirstOrDefault().Id;
+            if (model.StatusMessage == "" || model.StatusMessage == null)
+            {
+                statusMessage = "Your request is done";
+            }
+            else
+            {
+                statusMessage = model.StatusMessage;
+            }
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    RequestStatus requestStatus = new RequestStatus()
+                    {
+                        //RequestId = model.RequestId,
+                        StatusTypeId = statusTypeId,
+                        Message = statusMessage,
+                        TimeCreated = createdTime
+                    };
+                    context.RequestStatus.Add(requestStatus);
+                    context.SaveChanges();
+
+                    var request = context.Requests.Where(x => x.Id == model.RequestId).FirstOrDefault();
+
+                    if (request.PetitionerId != null)
+                    {
+                        Notification notification = new Notification()
+                        {
+                            UserId = request.PetitionerId,
+                            Message = "Your request '" + request.Message + "' has been done!",
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
+                    }
+                    if (request.AssignedHeadId != null)
+                    {
+                        var assginedHeadUserId = context.FacilityHeads.Where(x => x.Id == request.AssignedHeadId).FirstOrDefault().UserId;
+                        Notification notification = new Notification()
+                        {
+                            UserId = assginedHeadUserId,
+                            Message = "You are done a request '" + request.Message + "!",
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
+                        if (assginedHeadUserId != userId)
+                        {
+                            notification = new Notification()
+                            {
+                                UserId = assginedHeadUserId,
+                                Message = "'" + request.Message + " has been done by " + userName + "!",
+                                Seen = false,
+                                CreatedAt = createdTime
+                            };
+                            context.Notifications.Add(notification);
+                            context.SaveChanges();
+                        }
+                    }
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    TempData["Message"] = "Has an error when reply request!";
+                    return RedirectToAction("ListRequest");
+                }
+            }
+            TempData["Message"] = "Reply for " + userName + "'s request successfully!";
+            return RedirectToAction("ListRequest");
+        }
+
+        [HttpGet]
+        public ActionResult YourRequest()
+        {
+            if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
+            string userId = User.Identity.GetUserId();
+            List<RequestViewModel> requestViewModels = new List<RequestViewModel>();
+            
+            if (!User.IsInRole("Assignor"))
+            {
+                requestViewModels = (from r in context.Requests
+                                     join e in context.Equipments on r.EquipmentId equals e.Id into tb1
+                                     from e in tb1.ToList()
+                                     join f in context.Facilities on e.FacilityId equals f.Id
+                                     join et in context.EquipmentTypes on e.ArtifactId equals et.Id
+                                     join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+                                     from rs in tb2.ToList()
+                                     join st in context.StatusTypes on rs.StatusTypeId equals st.Id
+                                     join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
+                                     join u in context.Users on r.PetitionerId equals u.Id
+                                     where r.PetitionerId == userId
+                                     select new RequestViewModel
+                                     {
+                                         Id = r.Id,
+                                         Petitioner = u.UserName,
+                                         Equipment = et.TypeName,
+                                         Facility = f.Name,
+                                         RequestType = rt.TypeName,
+                                         RequestMessage = r.Message,
+                                         CreatedTime = rs.TimeCreated
+                                     }).ToList();
+            }
+            else
+            {
+                var assignedHeadId = context.FacilityHeads.Where(x => x.UserId == userId).FirstOrDefault().Id;
+                requestViewModels = (from r in context.Requests
+                                     join e in context.Equipments on r.EquipmentId equals e.Id into tb1
+                                     from e in tb1.ToList()
+                                     join f in context.Facilities on e.FacilityId equals f.Id
+                                     join et in context.EquipmentTypes on e.ArtifactId equals et.Id
+                                     join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+                                     from rs in tb2.ToList()
+                                     join st in context.StatusTypes on rs.StatusTypeId equals st.Id
+                                     join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
+                                     join u in context.Users on r.PetitionerId equals u.Id
+                                     where r.AssignedHeadId == assignedHeadId
+                                     select new RequestViewModel
+                                     {
+                                         Id = r.Id,
+                                         Petitioner = u.UserName,
+                                         Equipment = et.TypeName,
+                                         Facility = f.Name,
+                                         RequestType = rt.TypeName,
+                                         RequestMessage = r.Message,
+                                         CreatedTime = rs.TimeCreated
+                                     }).ToList();
+            }
+
+            return View(new HomeViewModel() { Notifications = GetNotifications(), RequestViewModels = requestViewModels });
         }
 
         public List<Notification> GetNotifications()
@@ -154,25 +623,99 @@ namespace OnlineHelpDesk.Controllers
                     select f).ToList();
         }
 
+        public List<RequestType> GetRequestTypes()
+        {
+            return (from rt in context.RequestTypes
+                    select rt).ToList();
+        }
+
+        public ActionResult GetFacilityHeadAssigned()
+        {
+            try
+            {
+                var users = (from u in context.Users
+                             select u).ToList();
+                Dictionary<string, string> dictUser = new Dictionary<string, string>();
+                foreach (var user in users)
+                {
+                    dictUser.Add(user.Id, user.FullName);
+                }
+
+                var facilityHeads = (from fh in context.FacilityHeads
+                                     select fh).ToList();
+                Dictionary<string, string> dictFacilityHeads = new Dictionary<string, string>();
+                foreach (var facilityHead in facilityHeads)
+                {
+                    dictFacilityHeads.Add(facilityHead.Id.ToString(), dictUser[facilityHead.UserId]);
+                }
+                return Json(dictFacilityHeads, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            
+        }
+
+        public ActionResult GetResponse(int id)
+        {
+            try
+            {
+                List<ResponseViewModel> responseViewModels = new List<ResponseViewModel>();
+                responseViewModels = (from r in context.Requests
+                                      join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb1
+                                      from rs in tb1.ToList()
+                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
+                                      join fh in context.FacilityHeads on r.AssignedHeadId equals fh.Id into tb2
+                                      from fh in tb2.ToList()
+                                      join u in context.Users on fh.UserId equals u.Id
+                                      where r.Id == id
+                                      select new ResponseViewModel()
+                                      {
+                                          AssignedHead = u.FullName,
+                                          RequestType = st.TypeName,
+                                          StatusMessage = rs.Message,
+                                          CreatedTime = rs.TimeCreated
+                                      }).ToList();
+                Dictionary<string, ResponseViewModel> dictResponse = new Dictionary<string, ResponseViewModel>();
+                foreach (var response in responseViewModels)
+                {
+                    dictResponse.Add(response.AssignedHead, response);
+                }
+                return Json(dictResponse, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        } 
+
         public ActionResult GetEquipment(int id)
         {
-            var equipmentTypes = (from et in context.EquipmentTypes
-                                  select et).ToList();
-            Dictionary<string, string> dictEquipmentType = new Dictionary<string, string>();
-            foreach (var et in equipmentTypes)
+            try
             {
-                dictEquipmentType.Add(et.Id.ToString(), et.TypeName);
-            }
-            var equipts = (from e in context.Equipments
-                           where e.FacilityId == id
-                           select e).ToList();
+                var equipmentTypes = (from et in context.EquipmentTypes
+                                      select et).ToList();
+                Dictionary<string, string> dictEquipmentType = new Dictionary<string, string>();
+                foreach (var et in equipmentTypes)
+                {
+                    dictEquipmentType.Add(et.Id.ToString(), et.TypeName);
+                }
+                var equipts = (from e in context.Equipments
+                               where e.FacilityId == id
+                               select e).ToList();
 
-            Dictionary<string, string> dictEquipment = new Dictionary<string, string>();
-            foreach (var e in equipts)
-            {
-                dictEquipment.Add(e.Id.ToString(), dictEquipmentType[e.ArtifactId.ToString()]);
+                Dictionary<string, string> dictEquipment = new Dictionary<string, string>();
+                foreach (var e in equipts)
+                {
+                    dictEquipment.Add(e.Id.ToString(), dictEquipmentType[e.ArtifactId.ToString()]);
+                }
+                return Json(dictEquipment, JsonRequestBehavior.AllowGet);
             }
-            return Json(dictEquipment, JsonRequestBehavior.AllowGet);
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

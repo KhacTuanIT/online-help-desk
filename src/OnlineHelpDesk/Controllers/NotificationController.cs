@@ -1,17 +1,34 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using OnlineHelpDesk.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace OnlineHelpDesk.Controllers
 {
+    [Authorize]
     public class NotificationController : Controller
     {
+        private ApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         // GET: Notification
-        [Authorize]
         public ActionResult Get()
         {
             ApplicationDbContext context = new ApplicationDbContext();
@@ -29,6 +46,14 @@ namespace OnlineHelpDesk.Controllers
                     dictNotifications.Add(notification.Id.ToString(), notification);
             }
             return Json(dictNotifications, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public string GetRole()
+        {
+            var userId = User.Identity.GetUserId();
+            string rolename = UserManager.GetRoles(userId).FirstOrDefault();
+            return rolename;
         }
     }
 }

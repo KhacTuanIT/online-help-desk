@@ -1,8 +1,25 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-
-@ViewBag.Message
-
-@Html.ActionLink("Import students", "Import", "Admin", new { importFor = "Students" })
-@Html.ActionLink("Import Facility-Heads", "Import", "Admin", new { importFor = "Facility-Heads" })
+<section class="py-5">
+    <div class="row">
+        <div class="col-lg-12">
+            <a href="/Admin/Import?importFor=Students" class="card px-5 py-3 mb-4 bg-hover-gradient-primary no-anchor-style">
+                <div class="row">
+                    <div class="col-lg-3 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                        <p class="mb-0 mt-3 mt-lg-0">Import Students</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-12">
+            <a href="/Admin/Import?importFor=Facility-Heads" class="card px-5 py-3 mb-4 bg-hover-gradient-primary no-anchor-style">
+                <div class="row">
+                    <div class="col-lg-3 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                        <p class="mb-0 mt-3 mt-lg-0">Import Facility-Heads</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>

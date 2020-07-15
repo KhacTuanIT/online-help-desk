@@ -54,6 +54,8 @@ namespace OnlineHelpDesk
                       "~/Scripts/AppJavaScript/js/create-new-request.js"));
             bundles.Add(new ScriptBundle("~/bundles/toast-custom").Include(
                       "~/Scripts/AppJavaScript/js/toastr-custom.js"));
+            bundles.Add(new StyleBundle("~/Content/status-request").Include(
+                      "~/Content/AppStyleSheet/css/assign-custom.css"));
         }
     }
 }

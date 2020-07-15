@@ -24,6 +24,7 @@ namespace OnlineHelpDesk.Models
 
     public class CreateNewRequestViewModel
     {
+        public List<RequestType> RequestTypes { get; set; }
         public List<Facility> Facilities { get; set; }
         public NewRequestViewModel NewRequestViewModel { get; set; }
     }
@@ -32,7 +33,30 @@ namespace OnlineHelpDesk.Models
     {
         [Required(ErrorMessage = "Equipment field is required.")]
         public int EquipmentId { get; set; }
+        [Required(ErrorMessage = "RequestType field is required.")]
+        public int RequestTypeId { get; set; }
         public string Message { get; set; }
+    }
+
+    public class ResponseViewModel
+    {
+        public string AssignedHead { get; set; }
+        public string RequestType { get; set; }
+        public string StatusMessage { get; set; }
+        public DateTime? CreatedTime { get; set; }
+    }
+
+    public class AssignViewModel
+    {
+        public int RequestId { get; set; }
+        public int? AssginedHeadId { get; set; }
+        public string StatusMessage { get; set; }
+    }
+
+    public class HandleViewModel
+    {
+        public int RequestId { get; set; }
+        public string StatusMessage { get; set; }
     }
 
     public class RequestViewModel
