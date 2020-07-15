@@ -521,6 +521,7 @@
     <Content Include="Views\Admin\Import.cshtml" />
     <Content Include="Views\Home\YourRequest.cshtml" />
     <Content Include="Views\Admin\ViewImported.cshtml" />
+    <Content Include="Views\Account\SetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202007151259275_Init.resx">
