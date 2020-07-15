@@ -51,6 +51,7 @@ namespace OnlineHelpDesk.Controllers
         {
             if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
             List<RequestViewModel> requestViewModels = new List<RequestViewModel>();
+            var statusRequestId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
             if (User.IsInRole("FacilityHead") || User.IsInRole("SuperAdmin"))
             {
                 requestViewModels = (from r in context.Requests
@@ -63,10 +64,12 @@ namespace OnlineHelpDesk.Controllers
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
                                      join u in context.Users on r.PetitionerId equals u.Id
+                                     orderby r.PetitionerId
+                                     where st.Id == statusRequestId
                                      select new RequestViewModel
                                      {
                                          Id = r.Id,
-                                         Petitioner = u.UserName,
+                                         Petitioner = u.FullName,
                                          Equipment = et.TypeName,
                                          Facility = f.Name,
                                          RequestType = rt.TypeName,
@@ -90,10 +93,12 @@ namespace OnlineHelpDesk.Controllers
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
                                      join u in context.Users on r.PetitionerId equals u.Id
                                      where r.AssignedHeadId == assignedHeadId
+                                     orderby r.PetitionerId
+                                     where st.Id == statusRequestId
                                      select new RequestViewModel
                                      {
                                          Id = r.Id,
-                                         Petitioner = u.UserName,
+                                         Petitioner = u.FullName,
                                          Equipment = et.TypeName,
                                          Facility = f.Name,
                                          RequestType = rt.TypeName,
@@ -157,7 +162,7 @@ namespace OnlineHelpDesk.Controllers
                     var requestId = request.Id;
                     RequestStatus requestStatus = new RequestStatus()
                     {
-                        //RequestId = requestId,
+                        RequestId = requestId,
                         StatusTypeId = statusTypeId,
                         TimeCreated = createdTime,
                         Message = "Created Request"
@@ -228,7 +233,7 @@ namespace OnlineHelpDesk.Controllers
                     {
                         RequestStatus requestStatus = new RequestStatus()
                         {
-                            //RequestId = model.RequestId,
+                            RequestId = model.RequestId,
                             StatusTypeId = statusTypeId,
                             Message = statusMessage,
                             TimeCreated = createdTime
@@ -321,12 +326,12 @@ namespace OnlineHelpDesk.Controllers
                 try
                 {
                     Request request = context.Requests.Where(x => x.Id == model.RequestId).FirstOrDefault();
-                    request.AssignedHeadId = model.AssginedHeadId;
+                    request.AssignedHeadId = model.AssignedHeadId;
                     context.Entry(request).State = EntityState.Modified;
 
                     RequestStatus requestStatus = new RequestStatus()
                     {
-                        //RequestId = request.Id,
+                        RequestId = request.Id,
                         StatusTypeId = statusTypeId,
                         Message = statusMessage,
                         TimeCreated = createdTime
@@ -407,7 +412,7 @@ namespace OnlineHelpDesk.Controllers
                 {
                     RequestStatus requestStatus = new RequestStatus()
                     {
-                        //RequestId = model.RequestId,
+                        RequestId = model.RequestId,
                         StatusTypeId = statusTypeId,
                         Message = statusMessage,
                         TimeCreated = createdTime
@@ -489,7 +494,7 @@ namespace OnlineHelpDesk.Controllers
                 {
                     RequestStatus requestStatus = new RequestStatus()
                     {
-                        //RequestId = model.RequestId,
+                        RequestId = model.RequestId,
                         StatusTypeId = statusTypeId,
                         Message = statusMessage,
                         TimeCreated = createdTime
@@ -554,6 +559,7 @@ namespace OnlineHelpDesk.Controllers
         {
             if (TempData["Message"] != null) ViewBag.Message = TempData["Message"];
             string userId = User.Identity.GetUserId();
+            var statusRequestId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
             List<RequestViewModel> requestViewModels = new List<RequestViewModel>();
             
             if (!User.IsInRole("Assignor"))
@@ -568,7 +574,7 @@ namespace OnlineHelpDesk.Controllers
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
                                      join u in context.Users on r.PetitionerId equals u.Id
-                                     where r.PetitionerId == userId
+                                     where r.PetitionerId == userId && st.Id != statusRequestId
                                      select new RequestViewModel
                                      {
                                          Id = r.Id,
@@ -593,7 +599,7 @@ namespace OnlineHelpDesk.Controllers
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
                                      join u in context.Users on r.PetitionerId equals u.Id
-                                     where r.AssignedHeadId == assignedHeadId
+                                     where r.AssignedHeadId == assignedHeadId && st.Id != statusRequestId
                                      select new RequestViewModel
                                      {
                                          Id = r.Id,
@@ -661,26 +667,48 @@ namespace OnlineHelpDesk.Controllers
         {
             try
             {
+                var assignedHeadId = context.Requests.Where(x => x.Id == id).FirstOrDefault().AssignedHeadId;
+                var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
+
                 List<ResponseViewModel> responseViewModels = new List<ResponseViewModel>();
-                responseViewModels = (from r in context.Requests
-                                      join rs in context.RequestStatus on r.Id equals rs.RequestId into tb1 // cũng vậy nốt
-                                      from rs in tb1.ToList()
-                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
-                                      join fh in context.FacilityHeads on r.AssignedHeadId equals fh.Id into tb2
-                                      from fh in tb2.ToList()
-                                      join u in context.Users on fh.UserId equals u.Id
-                                      where r.Id == id
-                                      select new ResponseViewModel()
-                                      {
-                                          AssignedHead = u.FullName,
-                                          RequestType = st.TypeName,
-                                          StatusMessage = rs.Message,
-                                          CreatedTime = rs.TimeCreated
-                                      }).ToList();
+                if (assignedHeadId != null) {
+                    responseViewModels = (from rs in context.RequestStatus
+                                          join st in context.StatusTypes on rs.StatusTypeId equals st.Id
+                                          join r in context.Requests on rs.RequestId equals r.Id into tb1
+                                          from r in tb1.ToList()
+                                          join fh in context.FacilityHeads on r.AssignedHeadId equals fh.Id into tb2
+                                          from fh in tb2.ToList()
+                                          join u in context.Users on fh.UserId equals u.Id
+                                          where rs.RequestId == id && st.Id != statusTypeId
+                                          select new ResponseViewModel()
+                                          {
+                                              Id = rs.Id,
+                                              AssignedHead = u.FullName,
+                                              RequestType = st.TypeName,
+                                              StatusMessage = rs.Message,
+                                              CreatedTime = rs.TimeCreated.ToString()
+                                          }).ToList();
+                }
+                else
+                {
+                    responseViewModels = (from rs in context.RequestStatus
+                                          join st in context.StatusTypes on rs.StatusTypeId equals st.Id
+                                          join r in context.Requests on rs.RequestId equals r.Id
+                                          where rs.RequestId == id && st.Id != statusTypeId
+                                          select new ResponseViewModel()
+                                          {
+                                              Id = rs.Id,
+                                              AssignedHead = "",
+                                              RequestType = st.TypeName,
+                                              StatusMessage = rs.Message,
+                                              CreatedTime = rs.TimeCreated.ToString()
+                                          }).ToList();
+                }
+                
                 Dictionary<string, ResponseViewModel> dictResponse = new Dictionary<string, ResponseViewModel>();
                 foreach (var response in responseViewModels)
                 {
-                    dictResponse.Add(response.AssignedHead, response);
+                    dictResponse.Add(response.Id.ToString(), response);
                 }
                 return Json(dictResponse, JsonRequestBehavior.AllowGet);
             }

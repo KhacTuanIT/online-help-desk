@@ -40,16 +40,17 @@ namespace OnlineHelpDesk.Models
 
     public class ResponseViewModel
     {
+        public int Id { get; set; }
         public string AssignedHead { get; set; }
         public string RequestType { get; set; }
         public string StatusMessage { get; set; }
-        public DateTime? CreatedTime { get; set; }
+        public string CreatedTime { get; set; }
     }
 
     public class AssignViewModel
     {
         public int RequestId { get; set; }
-        public int? AssginedHeadId { get; set; }
+        public int? AssignedHeadId { get; set; }
         public string StatusMessage { get; set; }
     }
 

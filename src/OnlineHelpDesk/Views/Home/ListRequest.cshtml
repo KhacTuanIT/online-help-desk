@@ -187,12 +187,12 @@
                 }
                 @if (User.IsInRole("Assignor"))
                 {
-                    <button type="button" class="btn btn-primary" onclick="doneForm();">Done Request</button>
-                    <button type="button" class="btn btn-primary" onclick="addRefuseForm();">Close Request</button>
+                    <button id="done-button" type="button" class="btn btn-primary" onclick="doneForm();">Done Request</button>
+                    <button id="close-button" type="button" class="btn btn-primary" onclick="addRefuseForm();">Close Request</button>
                 }
                 @if (User.IsInRole("Student"))
                 {
-                    <button type="button" class="btn btn-primary" onclick="addRefuseForm();">Close Request</button>
+                    <button id="close-button" type="button" class="btn btn-primary" onclick="addRefuseForm();">Close Request</button>
                 }
             </div>
         </div>
@@ -249,6 +249,11 @@
         function GetResponse(id) {
 
             var responseBody = $("#response-body");
+            var assigned = false;
+            var processing = false;
+            var completed = false;
+            var closed = false;
+            var reply = false;
 
             $.ajax({
                 url: "GetResponse/" + id,
@@ -263,6 +268,21 @@
                                 '</div>';
 
                             $.each(data, function (key, val) {
+                                if (val.RequestType == "Closed") {
+                                    closed = true;
+                                }
+                                if (val.RequestType == "Processing") {
+                                    processing = true;
+                                }
+                                if (val.RequestType == "Completed") {
+                                    completed = true;
+                                }
+                                if (val.RequestType == "Assigned") {
+                                    assigned = true;
+                                }
+                                if (val.RequestType == "Reply") {
+                                    reply = true;
+                                }
                                 text += '<div class="col-12 response-box mar-v-10">' +
                                     '<div class="col-12 pad-v-3">' +
                                     '<div class="row">' +
@@ -279,7 +299,7 @@
                                     '<div class="col-3 text-right pad-5">' +
                                     'Status:' +
                                     '</div>' +
-                                    '<div id="' + val.RequestType + '" class="col-9 pad-5 signed response-box-right">' +
+                                    '<div class="col-9 pad-5 ' + val.RequestType+' response-box-right">' +
                                     val.RequestType +
                                     '</div>' +
                                     '</div>' +
@@ -300,13 +320,43 @@
                                     'Time:' +
                                     '</div>' +
                                     '<div id="response-time" class="col-9 pad-5 response-box-right">' +
-                                    val.CreatedTime +
+                                    Date(val.CreatedTime) +
                                     '</div>' +
                                     ' </div>' +
                                     '</div>' +
                                     '</div>';
                             });
+                            $("#assign-task").css("display", "block");
+                            $("#done-button").css("display", "block");
+                            $("#close-button").css("display", "block");
+                            $("#reply").css("display", "block");
+                            if (assigned) {
+                                $("#assign-task").css("display", "none");
+                            }
+                            else {
+                                $("#assign-task").css("display", "block");
+                            }
+                            if (completed) {
+                                $("#done-button").css("display", "none");
+                            }
+                            else {
+                                $("#done-button").css("display", "block");
+                            }
+                            if (closed) {
+                                $("#assign-task").css("display", "none");
+                                $("#close-button").css("display", "none");
+                            }
+                            else {
+                                $("#close-button").css("display", "block");
+                            }
+                            if (reply) {
+                                $("#reply").css("display", "none");
+                            }
+                            else {
+                                $("#reply").css("display", "block");
+                            }
                             responseBody.append(text);
+                            responseBody.css("display", "block");
                         }
                         else {
                             responseBody.html("");

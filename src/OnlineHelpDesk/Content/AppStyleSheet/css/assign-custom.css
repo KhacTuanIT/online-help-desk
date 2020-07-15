@@ -1,24 +1,30 @@
 ﻿.Assigned {
     text-transform: uppercase;
-    color: darkgrey;
+    color: darkgrey !important;
+    font-weight: bold;
 }
 .Created {
     text-transform: uppercase;
-    color: yellow;
+    color: yellow !important;
+    font-weight: bold;
 }
 .Processing {
     text-transform: uppercase;
-    color: aqua;
+    color: aqua !important;
+    font-weight: bold;
 }
 .Done {
     text-transform: uppercase;
-    color: forestgreen;
+    color: forestgreen !important;
+    font-weight: bold;
 }
 .Closed {
     text-transform: uppercase;
-    color: darkred;
+    color: darkred !important;
+    font-weight: bold;
 }
 .Reply {
     text-transform: uppercase;
-    color: gray;
+    color: gray !important;
+    font-weight: bold;
 }

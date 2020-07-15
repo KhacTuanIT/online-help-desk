@@ -4,10 +4,17 @@
     <div aria-labelledby="userInfo" class="dropdown-menu">
         <div class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">@User.Identity.GetUserName()</strong><small id="userRole">@ViewBag.Role</small></div>
         <div class="dropdown-divider"></div>
-        @Html.ActionLink("Your Profile", "Index", "User", new { user = "me" }, new { @class = "dropdown-item" })
         @if (!User.IsInRole("SuperAdmin"))
         {
-            @Html.ActionLink("Your Request", "YourRequest", new{ }, new { @class = "dropdown-item" })
+            @Html.ActionLink("Your Profile", "Index", "User", new { user = "me" }, new { @class = "dropdown-item" })
+        }
+        else
+        {
+            @Html.ActionLink("Admin", "Index", "User", new { user = "me" }, new { @class = "dropdown-item" })
+        }
+        @if (!User.IsInRole("SuperAdmin"))
+        {
+            @Html.ActionLink("Your Request", "YourRequest", "Home", new { }, new { @class = "dropdown-item" })
         }
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
         {
