@@ -1,6 +1,6 @@
 ﻿@model OnlineHelpDesk.Models.ImportDataViewModel
 @{
-    ViewBag.Title = "Import " + ViewBag.ImportFor;
+    ViewBag.Title = "Import User Data";
 }
 
 @if (ViewBag.Message != null)
@@ -10,14 +10,22 @@
 
 @using (Html.BeginForm("UploadExcel", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    <label for="select-role">Role</label>
+    <select id="select-role" name="role">
+        @*<option value="SuperAdmin">Super Admin</option>*@
+        <option value="Student">Student</option>
+        <option value="Assignor">Assignor</option>
+        <option value="FacilityHead">Facility Heads</option>
+    </select>
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <label for="file-upload" class="btn-upload">
-        <i class="fa fa-upload"></i> Select *.xls/*/xlsx file
+        <i class="fa fa-upload"></i> Select *.xls/*.xlsx file
         @Html.TextBoxFor(m => m.File, new { type = "file", id = "file-upload", onchange = "selectedFileChange(this);" })
     </label>
     <span id="filename"></span>
     @Html.ValidationMessageFor(m => m.File)
-
     <br />
+
     <input type="hidden" name="importFor" value="@ViewBag.ImportFor" />
     <input id="btn-upload" type="submit" name="submit" value="Upload" class="d-none" />
 }

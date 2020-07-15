@@ -4,10 +4,8 @@
 
 @ViewBag.Message
 
-@Html.ActionLink("Import students", "Import", "Admin", new { importFor = "Students" }, null)
-<br />
-@Html.ActionLink("Import Facility-Heads", "Import", "Admin", new { importFor = "Facility-Heads" }, null)
-<br />
+@Html.ActionLink("Import User Data", "Import", "Admin", new { @class="btn btn-info" })
+
 @using (Html.BeginForm("LoadSampleData", "Admin", FormMethod.Post, new { id = "btnLoadSample", @class = "btn" }))
 {
     @Html.AntiForgeryToken()

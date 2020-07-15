@@ -81,7 +81,7 @@ namespace OnlineHelpDesk.Controllers
 
                             int i = worksheet.Dimension.Start.Row + 1;
 
-                            do
+                            while (int.TryParse((worksheet.Cells[++i, 1].Value ?? "").ToString(), out _))
                             {
                                 i++;
                                 listProfile.Add(new ProfileViewModel
@@ -92,7 +92,7 @@ namespace OnlineHelpDesk.Controllers
                                     Contact = worksheet.Cells[i, 6].Value?.ToString(),
                                     Role = "Student"
                                 });
-                            } while (int.TryParse((worksheet.Cells[i, 1].Value ?? "").ToString(), out _));
+                            }
 
                         }
                     }
