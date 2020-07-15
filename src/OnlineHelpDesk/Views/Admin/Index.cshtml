@@ -1,6 +1,17 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
+
+@ViewBag.Message
+
+@Html.ActionLink("Import User Data", "Import", "Admin", new { @class="btn btn-info" })
+
+@using (Html.BeginForm("LoadSampleData", "Admin", FormMethod.Post, new { id = "btnLoadSample", @class = "btn" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="submit" class="btn btn-danger" value="Load sample data" />
+}
+
 <section class="py-5">
     <div class="row">
         <div class="col-lg-12">

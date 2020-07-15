@@ -3,7 +3,7 @@ namespace OnlineHelpDesk.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initialize : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -62,7 +62,7 @@ namespace OnlineHelpDesk.Migrations
                         Id = c.String(nullable: false, maxLength: 128),
                         UserIdentityCode = c.String(maxLength: 32),
                         FullName = c.String(nullable: false, maxLength: 255),
-                        Address = c.String(),
+                        Contact = c.String(),
                         Avatar = c.String(),
                         CreatedAt = c.DateTime(),
                         MustChangePassword = c.Boolean(nullable: false),
@@ -143,7 +143,6 @@ namespace OnlineHelpDesk.Migrations
                         AssignedHeadId = c.Int(),
                         EquipmentId = c.Int(),
                         RequestTypeId = c.Int(),
-                        RequestStatusId = c.Int(nullable: false),
                         Message = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -204,6 +203,19 @@ namespace OnlineHelpDesk.Migrations
                 .Index(t => t.RoleId);
             
             CreateTable(
+                "dbo.ProfileViewModels",
+                c => new
+                    {
+                        UserIdentity = c.String(nullable: false, maxLength: 128),
+                        FullName = c.String(nullable: false),
+                        Email = c.String(nullable: false),
+                        Role = c.String(nullable: false),
+                        ProfilePicture = c.String(),
+                        Contact = c.String(),
+                    })
+                .PrimaryKey(t => t.UserIdentity);
+            
+            CreateTable(
                 "dbo.AspNetRoles",
                 c => new
                     {
@@ -252,6 +264,7 @@ namespace OnlineHelpDesk.Migrations
             DropIndex("dbo.Equipment", new[] { "ArtifactId" });
             DropIndex("dbo.Equipment", new[] { "FacilityId" });
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.ProfileViewModels");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.RequestType");
             DropTable("dbo.StatusType");

@@ -14,8 +14,6 @@ namespace OnlineHelpDesk.Controllers
     public class NotificationController : Controller
     {
         private ApplicationUserManager _userManager;
-        private ApplicationSignInManager _signInManager;
-
         public ApplicationUserManager UserManager
         {
             get

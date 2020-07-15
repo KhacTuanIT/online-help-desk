@@ -11,6 +11,9 @@ namespace OnlineHelpDesk.Models
         [Key]
         public int Id { get; set; }
 
+        [ForeignKey("Request")]
+        public int? RequestId { get; set; }
+
         [ForeignKey("StatusType")]
         public int? StatusTypeId { get; set; }
 

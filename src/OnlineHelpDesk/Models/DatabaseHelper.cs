@@ -60,9 +60,9 @@ namespace OnlineHelpDesk.Models
             // New user
             newUser = new ApplicationUser()
             {
-                UserName = "DE130032",
-                UserIdentityCode = "DE130032",
-                FullName = "This Is Sample Student",
+                UserName = "ST930022",
+                UserIdentityCode = "ST930022",
+                FullName = "Sample Student",
                 Email = "student@ohd.com",
                 CreatedAt = DateTime.UtcNow,
                 MustChangePassword = true

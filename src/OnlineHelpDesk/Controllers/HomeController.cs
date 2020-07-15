@@ -58,7 +58,7 @@ namespace OnlineHelpDesk.Controllers
                                      from e in tb1.ToList()
                                      join f in context.Facilities on e.FacilityId equals f.Id
                                      join et in context.EquipmentTypes on e.ArtifactId equals et.Id
-                                     join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+                                     join rs in context.RequestStatus on r.Id equals rs.RequestId into tb2 // Chỗ ni lỗi do xóa bên models
                                      from rs in tb2.ToList()
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
@@ -84,7 +84,7 @@ namespace OnlineHelpDesk.Controllers
                                      from e in tb1.ToList()
                                      join f in context.Facilities on e.FacilityId equals f.Id
                                      join et in context.EquipmentTypes on e.ArtifactId equals et.Id
-                                     join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+                                     join rs in context.RequestStatus on r.Id equals rs.RequestId into tb2 // Chỗ ni cũng vậy
                                      from rs in tb2.ToList()
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
@@ -563,7 +563,7 @@ namespace OnlineHelpDesk.Controllers
                                      from e in tb1.ToList()
                                      join f in context.Facilities on e.FacilityId equals f.Id
                                      join et in context.EquipmentTypes on e.ArtifactId equals et.Id
-                                     join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+                                     join rs in context.RequestStatus on r.Id equals rs.RequestId into tb2
                                      from rs in tb2.ToList()
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
@@ -588,7 +588,7 @@ namespace OnlineHelpDesk.Controllers
                                      from e in tb1.ToList()
                                      join f in context.Facilities on e.FacilityId equals f.Id
                                      join et in context.EquipmentTypes on e.ArtifactId equals et.Id
-                                     join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb2
+                                     join rs in context.RequestStatus on r.Id equals rs.RequestId into tb2
                                      from rs in tb2.ToList()
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
@@ -663,7 +663,7 @@ namespace OnlineHelpDesk.Controllers
             {
                 List<ResponseViewModel> responseViewModels = new List<ResponseViewModel>();
                 responseViewModels = (from r in context.Requests
-                                      join rs in context.RequestStatus on r.RequestStatusId equals rs.Id into tb1
+                                      join rs in context.RequestStatus on r.Id equals rs.RequestId into tb1 // cũng vậy nốt
                                       from rs in tb1.ToList()
                                       join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                       join fh in context.FacilityHeads on r.AssignedHeadId equals fh.Id into tb2

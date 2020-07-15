@@ -48,9 +48,10 @@ namespace OnlineHelpDesk.Controllers
             if (string.IsNullOrEmpty(user) || user == "me")
             {
                 if (!User.Identity.IsAuthenticated)
-                {
                     return RedirectToAction("Login", "Account", new { returnUrl = "/me" });
-                }
+
+                if (User.IsInRole("SuperAdmin"))
+                    return RedirectToAction("Index", "Admin");
 
                 return RedirectToRoute("Profile", new { user = User.Identity.GetUserName() });
             }
