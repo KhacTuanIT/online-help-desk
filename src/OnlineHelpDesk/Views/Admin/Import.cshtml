@@ -10,6 +10,7 @@
 
 @using (Html.BeginForm("UploadExcel", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    @Html.AntiForgeryToken()
     <label for="select-role">Role</label>
     <select id="select-role" name="role">
         @*<option value="SuperAdmin">Super Admin</option>*@
