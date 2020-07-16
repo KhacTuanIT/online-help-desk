@@ -1,11 +1,13 @@
 ﻿using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OnlineHelpDesk.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OnlineHelpDesk.Models
 {
@@ -29,7 +31,7 @@ namespace OnlineHelpDesk.Models
             {
                 var dbSeeder = new DatabaseSeeder(db);
 
-                dbSeeder.SeedtUsers();
+                dbSeeder.SeedUsers();
                 dbSeeder.SeedFacility();
                 dbSeeder.SeedEquipmentType();
                 dbSeeder.SeedEquipment();
@@ -39,72 +41,48 @@ namespace OnlineHelpDesk.Models
 
     public class DatabaseSeeder
     {
-        private ApplicationDbContext context;
+        private ApplicationDbContext db;
 
-        public DatabaseSeeder(ApplicationDbContext db)
+        public DatabaseSeeder(ApplicationDbContext db) => this.db = db;
+
+        public void SeedUsers()
         {
-            this.context = db;
-        }
-
-        public void SeedtUsers()
-        {
-            if (context.Users.Count() > 1) return;
-
-            var roleStore = new RoleStore<IdentityRole>(context);
-            var roleManager = new RoleManager<IdentityRole>(roleStore);
-            var userStore = new UserStore<ApplicationUser>(context);
-            var userManager = new UserManager<ApplicationUser>(userStore);
-
-            ApplicationUser newUser;
-
-            // New user
-            newUser = new ApplicationUser()
+            using (var userService = new UserService(db))
             {
-                UserName = "ST930022",
-                UserIdentityCode = "ST930022",
-                FullName = "Sample Student",
-                Email = "student@ohd.com",
-                CreatedAt = DateTime.UtcNow,
-                MustChangePassword = true
-            };
-            userManager.Create(newUser, "123@123a");
-            userManager.AddToRole(newUser.Id, "Student");
+                userService.CreateUser(new ApplicationUser()
+                {
+                    UserName = "ST000001",
+                    UserIdentityCode = "ST000001",
+                    FullName = "Sample Student",
+                    Email = "student@ohd.com"
+                }, role: "Student");
 
-            // New user
-            newUser = new ApplicationUser()
-            {
-                UserName = "FH000001",
-                UserIdentityCode = "FH000001",
-                FullName = "Sample Facility Head",
-                Email = "facilityhead@ohd.com",
-                CreatedAt = DateTime.UtcNow,
-                MustChangePassword = true
-            };
-            userManager.Create(newUser, "123@123a");
-            userManager.AddToRole(newUser.Id, "FacilityHead");
+                userService.CreateUser(new ApplicationUser()
+                {
+                    UserName = "AS000001",
+                    UserIdentityCode = "AS000001",
+                    FullName = "Sample Assignor",
+                    Email = "assignor@ohd.com"
+                }, role: "Assignor");
 
-            // New user
-            newUser = new ApplicationUser()
-            {
-                UserName = "AS000001",
-                UserIdentityCode = "AS000001",
-                FullName = "Sample Assignor",
-                Email = "assignor@ohd.com",
-                CreatedAt = DateTime.UtcNow,
-                MustChangePassword = true
-            };
-            userManager.Create(newUser, "123@123a");
-            userManager.AddToRole(newUser.Id, "Assignor");
+                userService.CreateUser(new ApplicationUser()
+                {
+                    UserName = "FH000001",
+                    UserIdentityCode = "FH000001",
+                    FullName = "Sample Facility Head",
+                    Email = "f.head@ohd.com"
+                }, role: "FacilityHead");
+            }
         }
 
         public void SeedFacility()
         {
-            if (context.Facilities.Any()) return;
-            using (var transaction = context.Database.BeginTransaction())
+            if (db.Facilities.Any()) return;
+            using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    context.Facilities.AddOrUpdate(x => x.Name,
+                    db.Facilities.AddOrUpdate(x => x.Name,
                         new Facility { Name = "Classroom", CreatedAt = DateTime.Now },
                         new Facility { Name = "Lab-Assistants", CreatedAt = DateTime.Now },
                         new Facility { Name = "Hostels", CreatedAt = DateTime.Now },
@@ -115,7 +93,7 @@ namespace OnlineHelpDesk.Models
                         new Facility { Name = "Others", CreatedAt = DateTime.Now }
                         );
 
-                    context.SaveChanges();
+                    db.SaveChanges();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -127,8 +105,8 @@ namespace OnlineHelpDesk.Models
 
         public void SeedEquipmentType()
         {
-            if (context.EquipmentTypes.Any()) return;
-            using (var transaction = context.Database.BeginTransaction())
+            if (db.EquipmentTypes.Any()) return;
+            using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
@@ -227,11 +205,11 @@ namespace OnlineHelpDesk.Models
 
                     equipmentTypes.ForEach(typename =>
                     {
-                        context.EquipmentTypes.AddOrUpdate(x => x.TypeName,
+                        db.EquipmentTypes.AddOrUpdate(x => x.TypeName,
                             new EquipmentType { TypeName = typename });
                     });
 
-                    context.SaveChanges();
+                    db.SaveChanges();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -243,18 +221,18 @@ namespace OnlineHelpDesk.Models
 
         public void SeedEquipment()
         {
-            if (context.Equipments.Any()) return;
-            using (var transaction = context.Database.BeginTransaction())
+            if (db.Equipments.Any()) return;
+            using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
                     // Add all ET to each Facility
-                    for (int i = 0; i < context.Facilities.Count(); i++)
+                    for (int i = 0; i < db.Facilities.Count(); i++)
                     {
-                        for (int j = 0; j < context.EquipmentTypes.Count(); j++)
+                        for (int j = 0; j < db.EquipmentTypes.Count(); j++)
                         {
                             //context.Equipments.AddOrUpdate(e => new { e.FacilityId, e.ArtifactId },
-                            context.Equipments.Add(
+                            db.Equipments.Add(
                                 new Equipment
                                 {
                                     FacilityId = i + 1,
@@ -263,7 +241,7 @@ namespace OnlineHelpDesk.Models
                         }
                     }
 
-                    context.SaveChanges();
+                    db.SaveChanges();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -277,10 +255,10 @@ namespace OnlineHelpDesk.Models
         #region Important data, called in InitializeRequiredData
         public void SeedRolesAndAdmin()
         {
-            if (context.Roles.Any()) return;
-            var roleStore = new RoleStore<IdentityRole>(context);
+            if (db.Roles.Any()) return;
+            var roleStore = new RoleStore<IdentityRole>(db);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
-            var userStore = new UserStore<ApplicationUser>(context);
+            var userStore = new UserStore<ApplicationUser>(db);
             var userManager = new UserManager<ApplicationUser>(userStore);
 
             // Add missing roles
@@ -325,18 +303,18 @@ namespace OnlineHelpDesk.Models
 
         public void SeedRequestType()
         {
-            if (context.RequestTypes.Any()) return;
-            using (var transaction = context.Database.BeginTransaction())
+            if (db.RequestTypes.Any()) return;
+            using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    context.RequestTypes.AddOrUpdate(x => x.TypeName,
+                    db.RequestTypes.AddOrUpdate(x => x.TypeName,
                         new RequestType { TypeName = "Q&A" },
                         new RequestType { TypeName = "Report broken equipment" },
                         new RequestType { TypeName = "Additional equipment required" }
                         );
 
-                    context.SaveChanges();
+                    db.SaveChanges();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -348,12 +326,12 @@ namespace OnlineHelpDesk.Models
 
         public void SeedStatusType()
         {
-            if (context.StatusTypes.Any()) return;
-            using (var transaction = context.Database.BeginTransaction())
+            if (db.StatusTypes.Any()) return;
+            using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    context.StatusTypes.AddOrUpdate(x => x.TypeName,
+                    db.StatusTypes.AddOrUpdate(x => x.TypeName,
                         new StatusType { TypeName = "Created" },
                         new StatusType { TypeName = "Assigned" },
                         new StatusType { TypeName = "Processing" },
@@ -361,7 +339,7 @@ namespace OnlineHelpDesk.Models
                         new StatusType { TypeName = "Closed" }
                         );
 
-                    context.SaveChanges();
+                    db.SaveChanges();
                     transaction.Commit();
                 }
                 catch (Exception)

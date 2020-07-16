@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 using System.Data.Entity;
 using System.Web.DynamicData;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OnlineHelpDesk.Services;
 
 namespace OnlineHelpDesk.Controllers
 {
@@ -148,7 +149,7 @@ namespace OnlineHelpDesk.Controllers
                         UserName = p.UserIdentity,
                         Email = p.Email,
                         FullName = p.FullName,
-                        Avatar = "~/Content/AppImages/useraccount.png",
+                        Avatar = AppInfo.DefaultProfilePicture,
                         Contact = p.Contact,
                         MustChangePassword = true,
                         CreatedAt = DateTime.Now
