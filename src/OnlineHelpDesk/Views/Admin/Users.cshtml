@@ -6,7 +6,7 @@
 
     <section class="py-5">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 card px-5 py-3 mb-4 text-center gradient-info text-white">
                 <h2>Users of role @ViewBag.Role</h2>
             </div>
             @if (User.IsInRole("SuperAdmin"))
@@ -35,13 +35,17 @@
                                         <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                             <p class="h5 mb-0 mt-3 mt-lg-0 font-weight-bold text-uppercase">@item.FullName</p>
                                         </div>
-                                        <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
-                                            <p class="mb-0 mt-3 mt-lg-0">@item.Email</p>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
-                                    <p class="mb-0 mt-3 mt-lg-0">@item.Contact</p>
+                                    <div class="row">
+                                        <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                                            <p class="mb-0 mt-3 mt-lg-0">@item.Email</p>
+                                        </div>
+                                        <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                                            <p class="mb-0 mt-3 mt-lg-0">@item.Contact</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-lg-3 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                     <p class="mb-0 mt-3 mt-lg-0">
@@ -63,13 +67,17 @@
                                         <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                             <p class="h5 mb-0 mt-3 mt-lg-0 font-weight-bold text-uppercase">@item.FullName</p>
                                         </div>
-                                        <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
-                                            <p class="mb-0 mt-3 mt-lg-0">@item.Email</p>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
-                                    <p class="mb-0 mt-3 mt-lg-0">@item.Contact</p>
+                                    <div class="row">
+                                        <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                                            <p class="mb-0 mt-3 mt-lg-0">@item.Email</p>
+                                        </div>
+                                        <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                                            <p class="mb-0 mt-3 mt-lg-0">@item.Contact</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </a>
