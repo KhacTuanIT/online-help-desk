@@ -146,13 +146,21 @@ namespace OnlineHelpDesk.Controllers
                 {
                     var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
                     var createdTime = DateTime.Now;
-
+                    string message = "";
+                    if (model.Message == null || model.Message.Trim() == "")
+                    {
+                        message = "Request";
+                    }
+                    else
+                    {
+                        message = model.Message;
+                    }
                     var userId = User.Identity.GetUserId();
                     Request request = new Request()
                     {
                         PetitionerId = userId,
                         EquipmentId = model.EquipmentId,
-                        Message = model.Message,
+                        Message = message,
                         RequestTypeId = model.RequestTypeId
                     };
                     context.Requests.Add(request);
@@ -574,7 +582,7 @@ namespace OnlineHelpDesk.Controllers
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
                                      join u in context.Users on r.PetitionerId equals u.Id
-                                     where r.PetitionerId == userId && st.Id != statusRequestId
+                                     where r.PetitionerId == userId
                                      select new RequestViewModel
                                      {
                                          Id = r.Id,

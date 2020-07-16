@@ -45,6 +45,7 @@ namespace OnlineHelpDesk.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Users(string role = "Student")
         {
             var usersIds = RoleManager.FindByName(role).Users.Select(u => u.UserId).ToList();
