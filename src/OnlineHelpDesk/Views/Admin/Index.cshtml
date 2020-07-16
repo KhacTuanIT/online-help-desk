@@ -7,13 +7,14 @@
 
 <section class="py-5">
     <div class="row">
-    @Html.ActionLink("Import User Data", "Import", "Admin", new { @class = "btn btn-info" })
+        <div class="col">
+            @Html.ActionLink("Import User Data", "Import", "Admin", new { @class = "btn btn-info" })
 
-    @using (Html.BeginForm("LoadSampleData", "Admin", FormMethod.Post, new { id = "btnLoadSample", @class = "btn" }))
-    {
-        @Html.AntiForgeryToken()
-        <input type="submit" class="btn btn-danger" value="Load sample data" />
-    }
-
+            @using (Html.BeginForm("LoadSampleData", "Admin", FormMethod.Post, new { id = "btnLoadSample", @class = "btn" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="submit" class="btn btn-danger" value="Load sample data" />
+            }
+        </div>
     </div>
 </section>

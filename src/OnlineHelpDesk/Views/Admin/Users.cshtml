@@ -9,12 +9,6 @@
             <div class="col-lg-12 card px-5 py-3 mb-4 text-center gradient-info text-white">
                 <h2>Users of role @ViewBag.Role</h2>
             </div>
-            @if (User.IsInRole("SuperAdmin"))
-            {
-                <div class="col-lg-3">
-                    @Html.ActionLink("Create New", "Create")
-                </div>
-            }
 
             @foreach (var item in Model)
             {
@@ -30,26 +24,19 @@
                                     </a>
 
                                 </div>
-                                <div class="col-lg-4 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                                <div class="col-lg-7 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                     <div class="row">
                                         <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                             <p class="h5 mb-0 mt-3 mt-lg-0 font-weight-bold text-uppercase">@item.FullName</p>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
-                                    <div class="row">
                                         <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                             <p class="mb-0 mt-3 mt-lg-0">@item.Email</p>
                                         </div>
-                                        <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
-                                            <p class="mb-0 mt-3 mt-lg-0">@item.Contact</p>
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
+                                <div class="col-lg-2 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                     <p class="mb-0 mt-3 mt-lg-0">
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.UserIdentity }, new { @class = "text-gray-400 px-1" })|@Html.ActionLink("Details", "Details", new { id = item.UserIdentity }, new { @class = "text-gray-400 px-1" })|@Html.ActionLink("Delete", "Delete", new { id = item.UserIdentity }, new { @class = "text-gray-400 px-1" })
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.UserIdentity }, new { @class = "text-dark px-1" })|@Html.ActionLink("Details", "Details", new { id = item.UserIdentity }, new { @class = "text-dark px-1" })|@Html.ActionLink("Delete", "Delete", new { id = item.UserIdentity }, new { @class = "text-dark px-1" })
                                     </p>
                                 </div>
                             </div>
@@ -67,15 +54,8 @@
                                         <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                             <p class="h5 mb-0 mt-3 mt-lg-0 font-weight-bold text-uppercase">@item.FullName</p>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
-                                    <div class="row">
                                         <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
                                             <p class="mb-0 mt-3 mt-lg-0">@item.Email</p>
-                                        </div>
-                                        <div class="col-lg-12 d-flex align-items-center flex-column flex-lg-row text-center text-md-left">
-                                            <p class="mb-0 mt-3 mt-lg-0">@item.Contact</p>
                                         </div>
                                     </div>
                                 </div>
