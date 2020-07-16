@@ -9,6 +9,9 @@ using System.Web.Mvc;
 using OfficeOpenXml;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity;
+using System.Web.DynamicData;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace OnlineHelpDesk.Controllers
 {
@@ -16,7 +19,6 @@ namespace OnlineHelpDesk.Controllers
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private ApplicationUserManager _userManager;
 
         // GET: Admin
         public ActionResult Index()
@@ -43,8 +45,33 @@ namespace OnlineHelpDesk.Controllers
             return View();
         }
 
-        // IMPORT DATA FROM EXCEL
+        public ActionResult Users(string role = "Student")
+        {
+            var usersIds = RoleManager.FindByName(role).Users.Select(u => u.UserId).ToList();
+            if (usersIds != null)
+            {
+                List<ProfileViewModel> model = new List<ProfileViewModel>();
+                usersIds.ForEach(uid =>
+                {
+                    var u = UserManager.FindById(uid);
+                    model.Add(new ProfileViewModel
+                    {
+                        FullName = u.FullName ?? "unknown",
+                        Contact = u.Contact ?? "unknown",
+                        Email = u.Email ?? "unknown",
+                        ProfilePicture = u.Avatar ?? "unknown",
+                        UserIdentity = u.UserIdentityCode ?? "unknown"
+                    });
+                });
+                ViewBag.Role = role;
+                return View(model);
+            }
 
+            ViewBag.Message = "Role not found";
+            return View();
+        }
+
+        // IMPORT DATA FROM EXCEL
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UploadExcel(ImportDataViewModel model, string role = "Student")
@@ -84,14 +111,13 @@ namespace OnlineHelpDesk.Controllers
 
                             while (int.TryParse((worksheet.Cells[++i, 1].Value ?? "").ToString(), out _))
                             {
-                                i++;
                                 listProfile.Add(new ProfileViewModel
                                 {
                                     FullName = worksheet.Cells[i, 2].Value?.ToString() + " " + worksheet.Cells[i, 3].Value?.ToString(),
                                     UserIdentity = worksheet.Cells[i, 4].Value?.ToString(),
                                     Email = worksheet.Cells[i, 5].Value?.ToString(),
                                     Contact = worksheet.Cells[i, 6].Value?.ToString(),
-                                    Role = "Student"
+                                    Role = role
                                 });
                             }
 
@@ -130,13 +156,24 @@ namespace OnlineHelpDesk.Controllers
                     var result = UserManager.Create(newUser, "123@123a");
                     if (result.Succeeded)
                     {
-                        UserManager.AddToRole(newUser.Id, "Student");
+                        UserManager.AddToRole(newUser.Id, p.Role);
+                        if (p.Role == "FacilityHead")
+                        {
+                            db.FacilityHeads.Add(new FacilityHead
+                            {
+                                UserId = newUser.Id
+                            });
+                            db.SaveChangesAsync();
+                        }
                     }
                 })
             );
         }
 
         #region Helpers
+        private ApplicationUserManager _userManager;
+        private RoleManager<IdentityRole> _roleManager;
+
         public ApplicationUserManager UserManager
         {
             get
@@ -146,6 +183,17 @@ namespace OnlineHelpDesk.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+        public RoleManager<IdentityRole> RoleManager
+        {
+            get
+            {
+                return _roleManager ?? new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
         #endregion

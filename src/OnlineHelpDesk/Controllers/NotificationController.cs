@@ -49,9 +49,15 @@ namespace OnlineHelpDesk.Controllers
         [HttpGet]
         public string GetRole()
         {
-            var userId = User.Identity.GetUserId();
-            string rolename = UserManager.GetRoles(userId).FirstOrDefault();
-            return rolename;
+            if (User.Identity.IsAuthenticated)
+            {
+                // Khi chưa logout mà tắt server, drop database, rồi chạy lại.
+                // Logout lại lần nữa sẽ bị null cái userId
+                var userId = User.Identity.GetUserId();
+                string rolename = UserManager.GetRoles(userId).FirstOrDefault();
+                return rolename;
+            }
+            return "";
         }
     }
 }

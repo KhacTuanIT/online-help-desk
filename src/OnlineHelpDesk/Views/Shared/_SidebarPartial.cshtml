@@ -21,14 +21,23 @@
         @if (User.IsInRole("SuperAdmin"))
         {
             <li class="sidebar-list-item">
-                <a href="#" data-toggle="collapse" data-target="#pages" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>Menu</span></a>
+                <a href="@Url.Action("Index", "Admin")" class="sidebar-link text-muted">
+                <i class="fa fa-download mr-3 text-gray"></i>
+                <span>Import</span>
+                </a>
+            </li>
+            <li class="sidebar-list-item">
+                <a href="#" data-toggle="collapse" data-target="#pages" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>Manage</span></a>
                 <div id="pages" class="collapse">
                     <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
                         <li class="sidebar-list-item">
-                            <a href="@Url.Action("Import", "Admin", new { importFor = "Students" })" class="sidebar-link text-muted"><i class="fa fa-user-circle mr-3 text-gray"></i><span>Student</span></a>
+                            <a href="@Url.Action("Users", "Admin", new { role = "Student" })" class="sidebar-link text-muted"><i class="fa fa-user-circle mr-3 text-gray"></i><span>Students</span></a>
                         </li>
                         <li class="sidebar-list-item">
-                            <a href="@Url.Action("Import", "Admin", new { importFor = "Facility-Heads" })" class="sidebar-link text-muted"><i class="fa fa-user-circle mr-3 text-gray"></i><span>Facility Head</span></a>
+                            <a href="@Url.Action("Users", "Admin", new { role = "Assignor" })" class="sidebar-link text-muted"><i class="fa fa-user-circle mr-3 text-gray"></i><span>Assignors</span></a>
+                        </li>
+                        <li class="sidebar-list-item">
+                            <a href="@Url.Action("Users", "Admin", new { role = "FacilityHead" })" class="sidebar-link text-muted"><i class="fa fa-user-circle mr-3 text-gray"></i><span>Facility Heads</span></a>
                         </li>
                     </ul>
                 </div>

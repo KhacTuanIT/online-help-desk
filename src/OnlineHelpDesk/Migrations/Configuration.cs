@@ -11,6 +11,7 @@ namespace OnlineHelpDesk.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(OnlineHelpDesk.Models.ApplicationDbContext context)
