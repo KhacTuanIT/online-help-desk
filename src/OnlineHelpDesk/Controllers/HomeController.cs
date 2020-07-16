@@ -140,6 +140,8 @@ namespace OnlineHelpDesk.Controllers
                 return RedirectToAction("CreateNewRequest");
             }
 
+            var adminId = RoleManager.FindByName("SuperAdmin").Users.FirstOrDefault().UserId;
+
             using (var transaction = context.Database.BeginTransaction())
             {
                 try
@@ -203,6 +205,14 @@ namespace OnlineHelpDesk.Controllers
                         Seen = false,
                         CreatedAt = createdTime
                     });
+
+                    context.Notifications.Add(new Notification()
+                    {
+                        UserId = adminId,
+                        Message = petitioner + " has been created a " + requestType + " request",
+                        Seen = false,
+                        CreatedAt = createdTime
+                    });
                     context.SaveChanges();
                     transaction.Commit();
                 }
@@ -225,6 +235,7 @@ namespace OnlineHelpDesk.Controllers
                 string userId = User.Identity.GetUserId();
                 string userName = User.Identity.GetUserName();
                 string statusMessage = "";
+                var adminId = RoleManager.FindByName("SuperAdmin").Users.FirstOrDefault().UserId;
                 DateTime createdTime = DateTime.Now;
                 var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Reply").FirstOrDefault().Id;
                 if (model.StatusMessage == "" || model.StatusMessage == null)
@@ -261,6 +272,14 @@ namespace OnlineHelpDesk.Controllers
                                 CreatedAt = createdTime
                             };
                             context.Notifications.Add(notification);
+                            notification = new Notification()
+                            {
+                                UserId = adminId,
+                                Message = "Request '" + request.Message + "' has been replied by " + userName,
+                                Seen = false,
+                                CreatedAt = createdTime
+                            };
+                            context.Notifications.Add(notification);
                             context.SaveChanges();
                         }
                         if (request.AssignedHeadId != null)
@@ -287,6 +306,14 @@ namespace OnlineHelpDesk.Controllers
                                 context.Notifications.Add(notification);
                                 context.SaveChanges();
                             }
+                            notification = new Notification()
+                            {
+                                UserId = adminId,
+                                Message = "Request '"+ request.Message +"' has been replied by " + userName,
+                                Seen = false,
+                                CreatedAt = createdTime
+                            };
+                            context.Notifications.Add(notification);
                         }
                         transaction.Commit();
                     }
@@ -314,6 +341,7 @@ namespace OnlineHelpDesk.Controllers
             string userId = User.Identity.GetUserId();
             string userName = User.Identity.GetUserName();
             string statusMessage = "";
+            var adminId = RoleManager.FindByName("SuperAdmin").Users.FirstOrDefault().UserId;
             DateTime createdTime = DateTime.Now;
             var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Assigned").FirstOrDefault().Id; 
             if (!ModelState.IsValid)
@@ -357,6 +385,14 @@ namespace OnlineHelpDesk.Controllers
                             CreatedAt = createdTime
                         };
                         context.Notifications.Add(notification);
+                        notification = new Notification()
+                        {
+                            UserId = adminId,
+                            Message = "Request '" + request.Message + "' has been assigned by " + userName,
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
                         context.SaveChanges();
                     }
                     if (request.AssignedHeadId != null)
@@ -383,6 +419,15 @@ namespace OnlineHelpDesk.Controllers
                             context.Notifications.Add(notification);
                             context.SaveChanges();
                         }
+                        notification = new Notification()
+                        {
+                            UserId = adminId,
+                            Message = "Request '" + request.Message + "' has been assigned by " + userName,
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
                     }
 
                     transaction.Commit();
@@ -404,6 +449,7 @@ namespace OnlineHelpDesk.Controllers
             string userId = User.Identity.GetUserId();
             string userName = User.Identity.GetUserName();
             string statusMessage = "";
+            var adminId = RoleManager.FindByName("SuperAdmin").Users.FirstOrDefault().UserId;
             DateTime createdTime = DateTime.Now;
             var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Closed").FirstOrDefault().Id;
             if (model.StatusMessage == "" || model.StatusMessage == null)
@@ -440,6 +486,14 @@ namespace OnlineHelpDesk.Controllers
                             CreatedAt = createdTime
                         };
                         context.Notifications.Add(notification);
+                        notification = new Notification()
+                        {
+                            UserId = adminId,
+                            Message = "Request '" + request.Message + "' has been refuse by " + userName,
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
                         context.SaveChanges();
                     }
                     if (request.AssignedHeadId != null)
@@ -466,6 +520,15 @@ namespace OnlineHelpDesk.Controllers
                             context.Notifications.Add(notification);
                             context.SaveChanges();
                         }
+                        notification = new Notification()
+                        {
+                            UserId = adminId,
+                            Message = "Request '" + request.Message + "' has been refuse by " + userName,
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
                     }
                     transaction.Commit();
                 }
@@ -486,6 +549,7 @@ namespace OnlineHelpDesk.Controllers
             string userId = User.Identity.GetUserId();
             string userName = User.Identity.GetUserName();
             string statusMessage = "";
+            var adminId = RoleManager.FindByName("SuperAdmin").Users.FirstOrDefault().UserId;
             DateTime createdTime = DateTime.Now;
             var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Completed").FirstOrDefault().Id;
             if (model.StatusMessage == "" || model.StatusMessage == null)
@@ -521,8 +585,17 @@ namespace OnlineHelpDesk.Controllers
                             Seen = false,
                             CreatedAt = createdTime
                         };
+                        context.Notifications.Add(notification); 
+                        notification = new Notification()
+                        {
+                            UserId = adminId,
+                            Message = "Request '" + request.Message + "' has been completed by " + userName,
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
                         context.Notifications.Add(notification);
-                        context.SaveChanges();
+                        context.SaveChanges(); 
+                        
                     }
                     if (request.AssignedHeadId != null)
                     {
@@ -548,6 +621,15 @@ namespace OnlineHelpDesk.Controllers
                             context.Notifications.Add(notification);
                             context.SaveChanges();
                         }
+                        notification = new Notification()
+                        {
+                            UserId = adminId,
+                            Message = "Request '" + request.Message + "' has been completed by " + userName,
+                            Seen = false,
+                            CreatedAt = createdTime
+                        };
+                        context.Notifications.Add(notification);
+                        context.SaveChanges();
                     }
                     transaction.Commit();
                 }
@@ -790,5 +872,21 @@ namespace OnlineHelpDesk.Controllers
                 return null;
             }
         }
+        #region Helpers
+        private RoleManager<IdentityRole> _roleManager;
+        public RoleManager<IdentityRole> RoleManager
+        {
+            get
+            {
+                return _roleManager ?? new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+        #endregion
+
     }
+
 }
