@@ -93,7 +93,7 @@ namespace OnlineHelpDesk.Models
                         new Facility { Name = "Others", CreatedAt = DateTime.Now }
                         );
 
-                    db.SaveChanges();
+                    db.SaveChangesAsync().Wait();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -209,7 +209,7 @@ namespace OnlineHelpDesk.Models
                             new EquipmentType { TypeName = typename });
                     });
 
-                    db.SaveChanges();
+                    db.SaveChangesAsync().Wait();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -241,7 +241,7 @@ namespace OnlineHelpDesk.Models
                         }
                     }
 
-                    db.SaveChanges();
+                    db.SaveChangesAsync().Wait();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -314,7 +314,7 @@ namespace OnlineHelpDesk.Models
                         new RequestType { TypeName = "Additional equipment required" }
                         );
 
-                    db.SaveChanges();
+                    db.SaveChangesAsync().Wait();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -339,7 +339,7 @@ namespace OnlineHelpDesk.Models
                         new StatusType { TypeName = "Closed" }
                         );
 
-                    db.SaveChanges();
+                    db.SaveChangesAsync().Wait();
                     transaction.Commit();
                 }
                 catch (Exception)

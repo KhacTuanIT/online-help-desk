@@ -143,33 +143,24 @@ namespace OnlineHelpDesk.Controllers
         private async Task ProfileModels2Database(List<ProfileViewModel> listProfile)
         {
             await Task.Run(() =>
-                listProfile.ForEach((p) =>
+            {
+                using (var userService = new UserService(db))
                 {
-                    var newUser = new ApplicationUser
+                    listProfile.ForEach((p) =>
                     {
-                        UserName = p.UserIdentity,
-                        Email = p.Email,
-                        FullName = p.FullName,
-                        Avatar = AppInfo.DefaultProfilePicture,
-                        Contact = p.Contact,
-                        MustChangePassword = true,
-                        CreatedAt = DateTime.Now
-                    };
-                    var result = UserManager.Create(newUser, "123@123a");
-                    if (result.Succeeded)
-                    {
-                        UserManager.AddToRole(newUser.Id, p.Role);
-                        if (p.Role == "FacilityHead")
+                        userService.CreateUser(new ApplicationUser
                         {
-                            db.FacilityHeads.Add(new FacilityHead
-                            {
-                                UserId = newUser.Id
-                            });
-                            db.SaveChangesAsync();
-                        }
-                    }
-                })
-            );
+                            UserName = p.UserIdentity,
+                            Email = p.Email,
+                            FullName = p.FullName,
+                            Avatar = AppInfo.DefaultProfilePicture,
+                            Contact = p.Contact,
+                            MustChangePassword = true,
+                            CreatedAt = DateTime.Now
+                        });
+                    });
+                };
+            });
         }
 
         #region Helpers

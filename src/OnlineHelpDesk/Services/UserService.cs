@@ -16,7 +16,7 @@ namespace OnlineHelpDesk.Services
         private ApplicationDbContext db;
         public UserService(ApplicationDbContext db) => this.db = db;
 
-        public bool CreateUser(ApplicationUser user, string role, string password = null)
+        public bool CreateUser(ApplicationUser user, string role = "Student", string password = null)
         {
             user.MustChangePassword = true;
             user.CreatedAt = DateTime.UtcNow;
@@ -33,18 +33,13 @@ namespace OnlineHelpDesk.Services
                         UserId = user.Id,
                         PositionName = "New Head",
                     });
-                    db.SaveChanges();
+                    db.SaveChangesAsync().Wait();
                 }
             }
             return result.Succeeded;
         }
 
-        public bool CreateUser(ApplicationUser user)
-        {
-            return CreateUser(user, "Student");
-        }
-
-        public bool v(ProfileViewModel user)
+        public bool CreateUser(ProfileViewModel user)
         {
             var result = CreateUser(new ApplicationUser
             {
