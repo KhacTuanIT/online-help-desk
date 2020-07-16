@@ -507,6 +507,9 @@
     <Content Include="Content\AppStyleSheet\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\AppStyleSheet\fonts\glyphicons-halflings-regular.woff" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\onlinehelpdesk - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\onlinehelpdesk - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\onlinehelpdesk - Web Deploy.pubxml" />
     <None Include="Scripts\AppJavaScript\jquery-validation\jquery.validate-vsdoc.js" />
     <Content Include="Views\Shared\Home\_ListRequestLayout.cshtml" />
     <Content Include="Views\Shared\Home\_ViewProfileLayout.cshtml" />
