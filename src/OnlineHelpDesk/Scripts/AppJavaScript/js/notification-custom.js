@@ -10,7 +10,7 @@
                 if (Object.keys(data).length != 0) {
                     _this.html("");
                     $.each(data, function (key, val) {
-                        var text = '<a href="/To/' + key + '" class="dropdown-item">' +
+                        var text = '<a href="/Todo/' + key + '" class="dropdown-item">' +
                             '<div class="d-flex align-items-center">' +
                             '<div class="icon icon-sm bg-violet text-white"><i class="fa fa-envelope"></i></div>' +
                             '<div class="text ml-2">' +

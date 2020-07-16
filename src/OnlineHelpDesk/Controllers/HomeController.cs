@@ -146,13 +146,21 @@ namespace OnlineHelpDesk.Controllers
                 {
                     var statusTypeId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
                     var createdTime = DateTime.Now;
-
+                    string message = "";
+                    if (model.Message == null || model.Message.Trim() == "")
+                    {
+                        message = "Request";
+                    }
+                    else
+                    {
+                        message = model.Message;
+                    }
                     var userId = User.Identity.GetUserId();
                     Request request = new Request()
                     {
                         PetitionerId = userId,
                         EquipmentId = model.EquipmentId,
-                        Message = model.Message,
+                        Message = message,
                         RequestTypeId = model.RequestTypeId
                     };
                     context.Requests.Add(request);
@@ -574,7 +582,7 @@ namespace OnlineHelpDesk.Controllers
                                      join st in context.StatusTypes on rs.StatusTypeId equals st.Id
                                      join rt in context.RequestTypes on r.RequestTypeId equals rt.Id
                                      join u in context.Users on r.PetitionerId equals u.Id
-                                     where r.PetitionerId == userId && st.Id != statusRequestId
+                                     where r.PetitionerId == userId
                                      select new RequestViewModel
                                      {
                                          Id = r.Id,
@@ -717,6 +725,43 @@ namespace OnlineHelpDesk.Controllers
                 return null;
             }
         } 
+
+        public ActionResult GetCal()
+        {
+            try
+            {
+                var createdId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
+                var created = context.RequestStatus.Where(x => x.StatusTypeId == createdId).Count();
+
+                var assignedId = context.StatusTypes.Where(x => x.TypeName == "Assigned").FirstOrDefault().Id;
+                var assigned = context.RequestStatus.Where(x => x.StatusTypeId == assignedId).Count();
+
+                var processingId = context.StatusTypes.Where(x => x.TypeName == "Processing").FirstOrDefault().Id;
+                var processing = context.RequestStatus.Where(x => x.StatusTypeId == processingId).Count();
+
+                var completedId = context.StatusTypes.Where(x => x.TypeName == "Completed").FirstOrDefault().Id;
+                var completed = context.RequestStatus.Where(x => x.StatusTypeId == completedId).Count();
+
+                var closedId = context.StatusTypes.Where(x => x.TypeName == "Closed").FirstOrDefault().Id;
+                var closed = context.RequestStatus.Where(x => x.StatusTypeId == closedId).Count();
+
+                Dictionary<string, CalViewModel> dictCal = new Dictionary<string, CalViewModel>();
+                CalViewModel calViewModel = new CalViewModel()
+                {
+                    Created = created,
+                    Assigned = assigned,
+                    Processing = processing,
+                    Completed = completed,
+                    Closed = closed
+                };
+                dictCal.Add("key", calViewModel);
+                return Json(dictCal, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         public ActionResult GetEquipment(int id)
         {

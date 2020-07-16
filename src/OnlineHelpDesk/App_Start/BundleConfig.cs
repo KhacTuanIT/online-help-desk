@@ -49,7 +49,8 @@ namespace OnlineHelpDesk
             bundles.Add(new StyleBundle("~/Content/modal").Include(
                       "~/Content/AppStyleSheet/css/modal.css"));
             bundles.Add(new ScriptBundle("~/bundles/notification").Include(
-                      "~/Scripts/AppJavaScript/js/notification-custom.js"));
+                      "~/Scripts/AppJavaScript/js/notification-custom.js",
+                      "~/Scripts/AppJavaScript/js/cal-custom.js"));
             bundles.Add(new ScriptBundle("~/bundles/newrequest").Include(
                       "~/Scripts/AppJavaScript/js/create-new-request.js"));
             bundles.Add(new ScriptBundle("~/bundles/toast-custom").Include(

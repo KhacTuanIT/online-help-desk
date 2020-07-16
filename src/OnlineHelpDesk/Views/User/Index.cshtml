@@ -6,26 +6,24 @@
 <section class="py-5">
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-4 col-sm-4">
-            <dl class="dl-horizontal">
+            <dl class="dl-horizontal text-center">
                 <dd>
-                    @Html.DisplayFor(model => model.ProfilePicture)
+                    <a href="User/ChangeAvatar">
+                        <img class="img-fluid rounded-circle border-green" style="max-width: 80%" src="../@Html.DisplayFor(model => model.ProfilePicture).ToString().Substring(1)" alt="Alternate Text" />
+                    </a>
                 </dd>
-                <dt>
-
-                    @Html.DisplayNameFor(model => model.ProfilePicture)
-                </dt>
             </dl>
         </div>
 
-        <div class="col-lg-8">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header gradient-primary text-white">
-                    <h2 class="h6 text-uppercase mb-0">Profile Information</h2>
+                    <h2 class="h4 text-uppercase mb-0">Profile Information</h2>
                 </div>
                 <div class="card-body row">
                     <div class="col-lg-8 col-md-8 col-sm-8">
                         <dl class="dl-horizontal">
-                            <dt>
+                            <dt class="h5">
                                 @Html.DisplayNameFor(model => model.UserIdentity)
                             </dt>
 
@@ -33,7 +31,7 @@
                                 @Html.DisplayFor(model => model.UserIdentity)
                             </dd>
 
-                            <dt>
+                            <dt class="h5">
                                 @Html.DisplayNameFor(model => model.FullName)
                             </dt>
 
@@ -41,7 +39,7 @@
                                 @Html.DisplayFor(model => model.FullName)
                             </dd>
 
-                            <dt>
+                            <dt class="h5">
                                 @Html.DisplayNameFor(model => model.Email)
                             </dt>
 
@@ -49,7 +47,7 @@
                                 @Html.DisplayFor(model => model.Email)
                             </dd>
 
-                            <dt>
+                            <dt class="h5">
                                 @Html.DisplayNameFor(model => model.Contact)
                             </dt>
 
