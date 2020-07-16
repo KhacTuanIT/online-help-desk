@@ -71,6 +71,15 @@ namespace OnlineHelpDesk.Models
         public DateTime? CreatedTime { get; set; }
     }   
 
+    public class CalViewModel
+    {
+        public int Created { get; set; }
+        public int Assigned { get; set; }
+        public int Processing { get; set; }
+        public int Completed { get; set; }
+        public int Closed { get; set; }
+    }
+
     public enum StatusTypeEnum
     {
         Default,

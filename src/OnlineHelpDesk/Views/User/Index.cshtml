@@ -8,7 +8,8 @@
         <div class="col-lg-4 col-md-4 col-sm-4">
             <dl class="dl-horizontal">
                 <dd>
-                    @Html.DisplayFor(model => model.ProfilePicture)
+                    @*@Html.DisplayFor(model => model.ProfilePicture)*@
+                    <img style="max-width: 80%" src="../@Html.DisplayFor(model => model.ProfilePicture).ToString().Substring(1)" alt="Alternate Text" />
                 </dd>
                 <dt>
 

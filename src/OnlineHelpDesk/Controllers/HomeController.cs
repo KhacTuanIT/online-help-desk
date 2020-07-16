@@ -718,6 +718,43 @@ namespace OnlineHelpDesk.Controllers
             }
         } 
 
+        public ActionResult GetCal()
+        {
+            try
+            {
+                var createdId = context.StatusTypes.Where(x => x.TypeName == "Created").FirstOrDefault().Id;
+                var created = context.RequestStatus.Where(x => x.StatusTypeId == createdId).Count();
+
+                var assignedId = context.StatusTypes.Where(x => x.TypeName == "Assigned").FirstOrDefault().Id;
+                var assigned = context.RequestStatus.Where(x => x.StatusTypeId == assignedId).Count();
+
+                var processingId = context.StatusTypes.Where(x => x.TypeName == "Processing").FirstOrDefault().Id;
+                var processing = context.RequestStatus.Where(x => x.StatusTypeId == processingId).Count();
+
+                var completedId = context.StatusTypes.Where(x => x.TypeName == "Completed").FirstOrDefault().Id;
+                var completed = context.RequestStatus.Where(x => x.StatusTypeId == completedId).Count();
+
+                var closedId = context.StatusTypes.Where(x => x.TypeName == "Closed").FirstOrDefault().Id;
+                var closed = context.RequestStatus.Where(x => x.StatusTypeId == closedId).Count();
+
+                Dictionary<string, CalViewModel> dictCal = new Dictionary<string, CalViewModel>();
+                CalViewModel calViewModel = new CalViewModel()
+                {
+                    Created = created,
+                    Assigned = assigned,
+                    Processing = processing,
+                    Completed = completed,
+                    Closed = closed
+                };
+                dictCal.Add("key", calViewModel);
+                return Json(dictCal, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public ActionResult GetEquipment(int id)
         {
             try

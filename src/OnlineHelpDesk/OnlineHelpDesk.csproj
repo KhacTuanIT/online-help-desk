@@ -402,6 +402,7 @@
     <Content Include="Scripts\AppJavaScript\jquery\jquery.min.js" />
     <Content Include="Scripts\AppJavaScript\jquery\jquery.slim.js" />
     <Content Include="Scripts\AppJavaScript\jquery\jquery.slim.min.js" />
+    <Content Include="Scripts\AppJavaScript\js\cal-custom.js" />
     <Content Include="Scripts\AppJavaScript\js\charts-custom.js" />
     <Content Include="Scripts\AppJavaScript\js\charts-home.js" />
     <Content Include="Scripts\AppJavaScript\js\create-new-request.js" />
